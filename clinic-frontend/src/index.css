@@ -1,0 +1,16 @@
+/* File: clinic-frontend/src/index.css */
+
+/* This is for the animated gradient border */
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: #e2e8f0; /* Default text color */
+}

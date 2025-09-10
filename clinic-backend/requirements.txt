@@ -1,0 +1,9 @@
+fastapi
+beanie
+python-dotenv
+uvicorn[standard]
+passlib[bcrypt]
+python-jose[cryptography]
+python-jwt
+cloudinary
+python-multipart
