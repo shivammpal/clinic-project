@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import { useAuthStore } from '../stores/authStore';
-import type { NavigateFunction,page } from '../App';// <-- NEW IMPORT
+import type { NavigateFunction, Page } from '../App';// <-- NEW IMPORT
 
 // --- Your existing type definitions (unchanged) ---
 interface Appointment {

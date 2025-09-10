@@ -3,12 +3,13 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import axiosInstance from '../api/axiosInstance';
+import type { NavigateFunction } from '../App';
 
-const RegisterPage = ({ onNavigate }: { onNavigate: (page: string) => void; }) => {
+const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
   const [activeTab, setActiveTab] = useState<'patient' | 'doctor'>('patient');
 
   // --- YOUR PATIENT FORM LOGIC (UNCHANGED) ---
-  const PatientForm = ({ onNavigate }: { onNavigate: (page: string) => void; }) => {
+  const PatientForm = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
     const [formData, setFormData] = useState({ email: '', password: '', confirmPassword: '' });
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });

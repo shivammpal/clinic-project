@@ -8,13 +8,16 @@ const timeSlots = [
   "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM",
 ];
 
+import type { NavigateFunction } from '../App';
+
 // Define props to receive doctor info and navigation function
 type AppointmentBookingPageProps = {
   doctorId: string;
   doctorName: string; // We'll pass the doctor's name for a better UX
+  onNavigate: NavigateFunction;
 };
 
-const AppointmentBookingPage = ({ doctorId, doctorName }: AppointmentBookingPageProps) => {
+const AppointmentBookingPage = ({ doctorId, doctorName, onNavigate }: AppointmentBookingPageProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
 

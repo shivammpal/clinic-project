@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import { useAuthStore } from '../stores/authStore';
-import type { NavigateFunction,page } from '../App';
+import type { NavigateFunction, Page } from '../App';
 import StarRating from '../components/StarRating';
 
 // ... (DoctorProfile type definition)

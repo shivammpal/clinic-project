@@ -32,8 +32,8 @@ const DoctorCard = ({ doctor, onNavigate }: DoctorCardProps) => {
       <div className="p-6">
         <h3 className="text-xl font-bold text-dark-text">{doctor.full_name}</h3>
         <p className="text-brand-blue font-semibold mt-1">{doctor.specialty}</p>
-        <button 
-          onClick={() => onNavigate('doctorProfile', doctor.doctor_id)}
+        <button
+          onClick={() => onNavigate('doctorProfile', { id: doctor.doctor_id })}
           className="mt-4 w-full bg-brand-blue text-white py-2 rounded-lg font-semibold hover:bg-sky-600 transition-colors"
         >
           View Profile
