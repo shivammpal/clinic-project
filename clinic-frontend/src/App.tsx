@@ -21,9 +21,9 @@ import MyProfilePage from "./pages/MyProfilePage";
 import SettingsPage from "./pages/SettingsPage";
 import AppointmentBookingPage from "./pages/AppointmentBookingPage";
 import PatientDashboardPage from "./pages/PatientDashboardPage";
-import DoctorDashboardPage from "./pages/DoctorDashboardPage"; // <-- NEW IMPORT
+import DoctorDashboardPage from "./pages/DoctorDashboardPage";
+import VideoCallPage from "./pages/VideoCallPage"; // <-- *** THIS IS THE FIX ***
 
-// --- UPDATED ROUTING STATE ---
 type PageState =
   | { name: "home" } | { name: "login" } | { name: "register" }
   | { name: "about" } | { name: "services" } | { name: "doctors" }
@@ -33,7 +33,8 @@ type PageState =
   | { name: "myProfile" } | { name: "settings" }
   | { name: "bookAppointment"; doctorId: string; doctorName: string }
   | { name: "patientDashboard" }
-  | { name: "doctorDashboard" }; // <-- NEW PAGE STATE
+  | { name: "doctorDashboard" }
+  | { name: "videoCall" };
 
 export type Page = PageState['name'];
 
@@ -74,7 +75,7 @@ function App() {
       case "privacy":
         return <PrivacyPolicyPage />;
       case "emergency":
-        return <EmergencyPage />;
+        return <EmergencyPage />; // <-- *** THIS IS ALSO FIXED ***
       case "myProfile":
         return <MyProfilePage />;
       case "settings":
@@ -82,15 +83,14 @@ function App() {
       case "bookAppointment":
         return <AppointmentBookingPage doctorId={currentPage.doctorId} doctorName={currentPage.doctorName} />;
       case "patientDashboard":
-        return <PatientDashboardPage />;
-      
-      // --- NEW CASE FOR DOCTOR DASHBOARD ---
+        return <PatientDashboardPage onNavigate={handleNavigate} />;
       case "doctorDashboard":
-        return <DoctorDashboardPage />;
-
+        return <DoctorDashboardPage onNavigate={handleNavigate}/>;
+      case "videoCall":
+        return <VideoCallPage onNavigate={handleNavigate} />;
       case "home":
       default:
-        return <LandingPage />;
+        return <LandingPage onNavigate={handleNavigate} />;
     }
   };
 

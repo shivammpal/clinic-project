@@ -3,14 +3,14 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import { useAuthStore } from '../stores/authStore';
+import { Page } from '../App'; // <-- NEW IMPORT
 
-// Define types for our data
+// --- Your existing type definitions (unchanged) ---
 interface Appointment {
   appointment_id: string;
   appointment_date: string;
   appointment_time: string;
   status: string;
-  // In a real app, you'd fetch doctor details too
   doctor_id: string; 
 }
 
@@ -23,7 +23,13 @@ interface Prescription {
 
 type Tab = 'appointments' | 'prescriptions' | 'profile';
 
-const PatientDashboardPage = () => {
+// --- NEW: Define props to accept the navigation function ---
+type PatientDashboardPageProps = {
+    onNavigate: (page: Page) => void;
+}
+
+// --- UPDATE: Component now accepts props ---
+const PatientDashboardPage = ({ onNavigate }: PatientDashboardPageProps) => {
   const [activeTab, setActiveTab] = useState<Tab>('appointments');
   const token = useAuthStore((state) => state.token);
 
@@ -42,7 +48,18 @@ const PatientDashboardPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl font-bold text-dark-text mb-8">My Dashboard</h1>
+      {/* --- NEW: Header with the Start Call button --- */}
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold text-dark-text">My Dashboard</h1>
+        <button 
+            onClick={() => onNavigate('videoCall')}
+            className="bg-brand-blue text-white font-bold py-2 px-6 rounded-lg hover:bg-sky-600 transition-colors shadow-md"
+        >
+            Start Test Call
+        </button>
+      </div>
+      
+      {/* Your existing tabs and content (unchanged) */}
       <div className="flex border-b border-slate-700 mb-8">
         <button onClick={() => setActiveTab('appointments')} className={`px-6 py-3 font-semibold text-lg transition-colors ${activeTab === 'appointments' ? 'text-brand-blue border-b-2 border-brand-blue' : 'text-dark-subtle'}`}>Appointments</button>
         <button onClick={() => setActiveTab('prescriptions')} className={`px-6 py-3 font-semibold text-lg transition-colors ${activeTab === 'prescriptions' ? 'text-brand-blue border-b-2 border-brand-blue' : 'text-dark-subtle'}`}>Prescriptions</button>
@@ -53,7 +70,7 @@ const PatientDashboardPage = () => {
   );
 };
 
-// Sub-component for Appointments
+// --- Your existing sub-components (unchanged) ---
 const AppointmentsList = ({ token }: { token: string | null }) => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -90,10 +107,8 @@ const AppointmentsList = ({ token }: { token: string | null }) => {
   );
 };
 
-// Sub-component for Prescriptions
 const PrescriptionsList = ({ token }: { token: string | null }) => {
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
-  // ... (Similar loading and fetching logic as AppointmentsList) ...
   useEffect(() => {
     const fetchPrescriptions = async () => {
        if (!token) return;

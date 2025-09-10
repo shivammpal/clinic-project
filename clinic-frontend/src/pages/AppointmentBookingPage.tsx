@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-
 // Mock data for available time slots. In the future, this will come from the backend.
 const timeSlots = [
   "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM",

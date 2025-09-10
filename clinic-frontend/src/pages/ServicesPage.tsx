@@ -1,7 +1,8 @@
 // File: clinic-frontend/src/pages/ServicesPage.tsx
-
+import PageWrapper from '../components/PageWrapper';
 const ServicesPage = () => {
   return (
+    <PageWrapper>
     <div className="max-w-7xl mx-auto text-center py-20 px-4">
       <h1 className="text-5xl font-extrabold text-dark-text">Our Services</h1>
       <p className="mt-4 text-lg text-dark-subtle">
@@ -20,6 +21,7 @@ const ServicesPage = () => {
         </div>
       </div>
     </div>
+    </PageWrapper>
   );
 };
 export default ServicesPage;

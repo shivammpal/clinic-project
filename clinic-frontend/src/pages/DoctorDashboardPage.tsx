@@ -1,5 +1,4 @@
 // File: clinic-frontend/src/pages/DoctorDashboardPage.tsx
-
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import { useAuthStore } from '../stores/authStore';

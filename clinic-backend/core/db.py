@@ -6,7 +6,7 @@ from .config import settings
 
 # --- Import your document models here ---
 from models.user_models import User, DoctorProfile
-from models.clinic_models import Appointment, Prescription
+from models.clinic_models import Appointment, Prescription,Review
 
 async def init_db():
     """
@@ -24,7 +24,8 @@ async def init_db():
             User, 
             DoctorProfile,
             Appointment,      
-            Prescription  
+            Prescription,
+            Review
         ]
     )
     print("Database connection initialized with models...")

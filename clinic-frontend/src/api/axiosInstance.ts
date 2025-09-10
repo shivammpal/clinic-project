@@ -2,10 +2,16 @@
 
 import axios from 'axios';
 
-const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000', // Your FastAPI backend URL
-});
+// Vite exposes environment variables on the `import.meta.env` object.
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-// We can add interceptors here later to automatically add the auth token to requests
+if (!baseURL) {
+  // This is a safety check to ensure the app doesn't run without the backend address.
+  throw new Error("VITE_API_BASE_URL is not defined. Please check your .env file.");
+}
+
+const axiosInstance = axios.create({
+  baseURL: baseURL,
+});
 
 export default axiosInstance;
