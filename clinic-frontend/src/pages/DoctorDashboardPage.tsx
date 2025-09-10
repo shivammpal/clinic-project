@@ -19,6 +19,7 @@ type DoctorDashboardPageProps = {
 };
 
 const DoctorDashboardPage = ({ onNavigate }: DoctorDashboardPageProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [activeTab, setActiveTab] = useState('appointments');
   const token = useAuthStore((state) => state.token);
   

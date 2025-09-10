@@ -8,6 +8,7 @@ type VideoCallPageProps = {
 };
 
 const VideoCallPage = ({ onNavigate }: VideoCallPageProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const localVideoRef = useRef<HTMLVideoElement>(null);
   // Use a ref to hold the stream object. This provides a stable reference
   // that doesn't change on re-renders, fixing the button logic.

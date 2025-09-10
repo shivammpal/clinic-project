@@ -1,4 +1,3 @@
-// File: clinic-frontend/src/pages/DoctorProfilePage.tsx
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import { useAuthStore } from '../stores/authStore';
@@ -17,6 +16,7 @@ type DoctorProfilePageProps = {
 };
 
 const DoctorProfilePage = ({ doctorId, onNavigate }: DoctorProfilePageProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [doctor, setDoctor] = useState<DoctorProfile | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const { isAuthenticated, user, token } = useAuthStore(state => ({
@@ -55,7 +55,7 @@ const DoctorProfilePage = ({ doctorId, onNavigate }: DoctorProfilePageProps) => 
     }
     setReviewError('');
     try {
-      const response = await axiosInstance.post(`/reviews/${doctorId}`, 
+      const response = await axiosInstance.post(`/reviews/${doctorId}`,
         { rating, comment },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -80,7 +80,7 @@ const DoctorProfilePage = ({ doctorId, onNavigate }: DoctorProfilePageProps) => 
       {/* Reviews Section */}
       <div className="mt-12">
         <h2 className="text-3xl font-bold text-dark-text mb-6">Patient Reviews</h2>
-        
+
         {/* Review Submission Form (Only for logged-in patients) */}
         {isAuthenticated && user?.role === 'patient' && (
           <div className="bg-dark-card p-6 rounded-lg mb-8 border border-slate-700">
@@ -91,7 +91,9 @@ const DoctorProfilePage = ({ doctorId, onNavigate }: DoctorProfilePageProps) => 
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
                     <button type="button" key={i} onClick={() => setRating(i + 1)}>
-                      <svg className={`w-7 h-7 ${i < rating ? 'text-amber-400' : 'text-slate-600'}`} fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.955a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.448a1 1 0 00-.364 1.118l1.287 3.955c.3.921-.755 1.688-1.54 1.118l-3.368-2.448a1 1 0 00-1.176 0l-3.368 2.448c-.784.57-1.838-.197-1.54-1.118l1.287-3.955a1 1 0 00-.364-1.118L2.05 9.382c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69L9.049 2.927z" /></svg>
+                      <svg className={`w-7 h-7 ${i < rating ? 'text-amber-400' : 'text-slate-600'}`} fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.955a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.448a1 1 0 00-.364 1.118l1.287 3.955c.3.921-.755 1.688-1.54 1.118l-3.368-2.448a1 1 0 00-1.176 0l-3.368 2.448c-.784.57-1.838-.197-1.54-1.118l1.287-3.955a1 1 0 00-.364-1.118L2.05 9.382c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69L9.049 2.927z" />
+                      </svg>
                     </button>
                   ))}
                 </div>
