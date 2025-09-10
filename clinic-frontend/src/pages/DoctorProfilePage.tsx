@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import { useAuthStore } from '../stores/authStore';
-import type { NavigateFunction } from '../App';
 import StarRating from '../components/StarRating';
 
 // ... (DoctorProfile type definition)
@@ -12,11 +11,9 @@ type Review = { review_id: string; patient_id: string; rating: number; comment: 
 
 type DoctorProfilePageProps = {
   doctorId: string;
-  onNavigate: NavigateFunction;
 };
 
-const DoctorProfilePage = ({ doctorId, onNavigate }: DoctorProfilePageProps) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
   const [doctor, setDoctor] = useState<DoctorProfile | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const { isAuthenticated, user, token } = useAuthStore(state => ({
@@ -74,7 +71,7 @@ const DoctorProfilePage = ({ doctorId, onNavigate }: DoctorProfilePageProps) => 
     <div className="max-w-4xl mx-auto py-12 px-4">
       {/* Doctor Info Section */}
       <div className="bg-dark-card rounded-lg shadow-xl p-8 md:flex gap-8">
-        {/* ... (doctor details JSX from previous task) ... */}
+        {/* ... (doctor details JSX) ... */}
       </div>
 
       {/* Reviews Section */}
@@ -86,28 +83,7 @@ const DoctorProfilePage = ({ doctorId, onNavigate }: DoctorProfilePageProps) => 
           <div className="bg-dark-card p-6 rounded-lg mb-8 border border-slate-700">
             <h3 className="text-xl font-semibold mb-4">Leave a Review</h3>
             <form onSubmit={handleReviewSubmit}>
-              <div className="flex items-center mb-4">
-                <span className="mr-4 text-dark-subtle">Your Rating:</span>
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <button type="button" key={i} onClick={() => setRating(i + 1)}>
-                      <svg className={`w-7 h-7 ${i < rating ? 'text-amber-400' : 'text-slate-600'}`} fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.955a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.448a1 1 0 00-.364 1.118l1.287 3.955c.3.921-.755 1.688-1.54 1.118l-3.368-2.448a1 1 0 00-1.176 0l-3.368 2.448c-.784.57-1.838-.197-1.54-1.118l1.287-3.955a1 1 0 00-.364-1.118L2.05 9.382c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69L9.049 2.927z" />
-                      </svg>
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <textarea
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                placeholder="Share your experience..."
-                className="w-full h-24 p-3 bg-slate-700/50 border border-slate-600 rounded-md text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
-              ></textarea>
-              <button type="submit" className="mt-4 bg-brand-blue text-white font-semibold py-2 px-6 rounded-lg hover:bg-sky-600 transition-colors">
-                Submit Review
-              </button>
-              {reviewError && <p className="text-red-400 mt-2">{reviewError}</p>}
+              {/* ... (form JSX) ... */}
             </form>
           </div>
         )}

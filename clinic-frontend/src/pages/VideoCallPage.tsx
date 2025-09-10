@@ -1,17 +1,7 @@
-// File: clinic-frontend/src/pages/VideoCallPage.tsx
-
 import { useEffect, useRef, useState } from 'react';
-import type { NavigateFunction } from '../App';
 
-type VideoCallPageProps = {
-  onNavigate: NavigateFunction;
-};
-
-const VideoCallPage = ({ onNavigate }: VideoCallPageProps) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+const VideoCallPage = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null);
-  // Use a ref to hold the stream object. This provides a stable reference
-  // that doesn't change on re-renders, fixing the button logic.
   const mediaStreamRef = useRef<MediaStream | null>(null);
 
   const [messages, setMessages] = useState<string[]>([]);
@@ -19,13 +9,10 @@ const VideoCallPage = ({ onNavigate }: VideoCallPageProps) => {
   const [isVideoOff, setIsVideoOff] = useState(false);
 
   useEffect(() => {
-    // --- 1. Set up WebSocket connection dynamically ---
     const getWebSocketURL = () => {
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-      // Replace http with ws, or https with wss
       const wsProtocol = apiBaseUrl.startsWith('https') ? 'wss' : 'ws';
-      const wsUrl = `${wsProtocol}://${apiBaseUrl.split('//')[1]}/ws/video-call/test-room`;
-      return wsUrl;
+      return `${wsProtocol}://${apiBaseUrl.split('//')[1]}/ws/video-call/test-room`;
     };
 
     const ws = new WebSocket(getWebSocketURL());
@@ -34,13 +21,11 @@ const VideoCallPage = ({ onNavigate }: VideoCallPageProps) => {
     ws.onclose = () => setMessages(prev => [...prev, "Status: Disconnected."]);
     ws.onerror = () => setMessages(prev => [...prev, "Error: WebSocket connection failed."]);
 
-    // --- 2. Access Camera and Microphone ---
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
       .then(stream => {
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = stream;
         }
-        // Store the stream in our ref
         mediaStreamRef.current = stream;
       })
       .catch(err => {
@@ -48,21 +33,18 @@ const VideoCallPage = ({ onNavigate }: VideoCallPageProps) => {
         setMessages(prev => [...prev, "Error: Could not access camera."]);
       });
 
-    // --- 3. Cleanup Function ---
     return () => {
       ws.close();
-      // When the component is unmounted, stop all media tracks.
       if (mediaStreamRef.current) {
         mediaStreamRef.current.getTracks().forEach(track => track.stop());
       }
     };
-  }, []); // This effect runs only once.
+  }, []);
 
-  // --- FIXED: Control Button Handlers ---
   const toggleMute = () => {
     if (!mediaStreamRef.current) return;
     mediaStreamRef.current.getAudioTracks().forEach(track => {
-      track.enabled = !track.enabled; // Toggle the audio track
+      track.enabled = !track.enabled;
     });
     setIsMuted(prev => !prev);
   };
@@ -70,7 +52,7 @@ const VideoCallPage = ({ onNavigate }: VideoCallPageProps) => {
   const toggleVideo = () => {
     if (!mediaStreamRef.current) return;
     mediaStreamRef.current.getVideoTracks().forEach(track => {
-      track.enabled = !track.enabled; // Toggle the video track
+      track.enabled = !track.enabled;
     });
     setIsVideoOff(prev => !prev);
   };
