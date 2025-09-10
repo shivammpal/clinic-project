@@ -4,8 +4,15 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../stores/authStore';
 import axiosInstance from '../api/axiosInstance';
+import { Page } from '../App'; // <-- Import the Page type
 
-const LoginPage = ({ onNavigate }: { onNavigate: (page: string) => void; }) => {
+// *** THIS IS THE FIX ***
+// The type for onNavigate now matches the one in App.tsx
+type LoginPageProps = {
+  onNavigate: (page: Page, data?: { [key: string]: string }) => void;
+};
+
+const LoginPage = ({ onNavigate }: LoginPageProps) => {
   // --- YOUR EXISTING LOGIC (UNCHANGED) ---
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,7 +34,7 @@ const LoginPage = ({ onNavigate }: { onNavigate: (page: string) => void; }) => {
       const { access_token } = response.data;
       login(access_token);
       alert('Login successful!');
-      onNavigate('home');
+      onNavigate('home'); // This call now matches the correct type
     } catch (err: any) {
       console.error(err);
       setError(err.response?.data?.detail || 'An unexpected error occurred.');
@@ -36,7 +43,7 @@ const LoginPage = ({ onNavigate }: { onNavigate: (page: string) => void; }) => {
     }
   };
 
-  // --- UPDATED UI ---
+  // --- YOUR EXISTING UI (UNCHANGED) ---
   return (
     <div className="min-h-[calc(100vh-200px)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <motion.div

@@ -9,7 +9,7 @@ from core.db import init_db
 from core.cloudinary_utils import configure_cloudinary
 
 # Import your API routers
-from api.routes import auth_routes, admin_routes, public_routes
+from api.routes import auth_routes, admin_routes, public_routes,user_routes,doctor_routes
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -46,6 +46,8 @@ app.add_middleware(
 app.include_router(auth_routes.router)
 app.include_router(admin_routes.router)
 app.include_router(public_routes.router)
+app.include_router(user_routes.router)
+app.include_router(doctor_routes.router)
 
 @app.get("/")
 def read_root():

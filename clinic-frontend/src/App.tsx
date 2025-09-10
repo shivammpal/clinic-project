@@ -4,7 +4,7 @@ import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
-// Import all page components, including the new one
+// Import all page components
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -19,10 +19,11 @@ import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import EmergencyPage from "./pages/EmergencyPage";
 import MyProfilePage from "./pages/MyProfilePage";
 import SettingsPage from "./pages/SettingsPage";
-import AppointmentBookingPage from "./pages/AppointmentBookingPage"; // <-- NEW IMPORT
+import AppointmentBookingPage from "./pages/AppointmentBookingPage";
+import PatientDashboardPage from "./pages/PatientDashboardPage";
+import DoctorDashboardPage from "./pages/DoctorDashboardPage"; // <-- NEW IMPORT
 
 // --- UPDATED ROUTING STATE ---
-// We add the new page state for booking an appointment
 type PageState =
   | { name: "home" } | { name: "login" } | { name: "register" }
   | { name: "about" } | { name: "services" } | { name: "doctors" }
@@ -30,23 +31,21 @@ type PageState =
   | { name: "blog" } | { name: "faq" } | { name: "contact" }
   | { name: "privacy" } | { name: "emergency" }
   | { name: "myProfile" } | { name: "settings" }
-  // --- NEW STATE FOR BOOKING PAGE ---
-  | { name: "bookAppointment"; doctorId: string; doctorName: string };
+  | { name: "bookAppointment"; doctorId: string; doctorName: string }
+  | { name: "patientDashboard" }
+  | { name: "doctorDashboard" }; // <-- NEW PAGE STATE
 
 export type Page = PageState['name'];
 
 function App() {
   const [currentPage, setCurrentPage] = useState<PageState>({ name: "home" });
 
-  // --- UPDATED NAVIGATION FUNCTION ---
-  // This is now more flexible and can accept a data object for any page
   const handleNavigate = (page: Page, data?: { [key: string]: string }) => {
     if (page === 'doctorProfile' && data?.id) {
       setCurrentPage({ name: page, id: data.id });
     } else if (page === 'bookAppointment' && data?.doctorId && data?.doctorName) {
       setCurrentPage({ name: page, doctorId: data.doctorId, doctorName: data.doctorName });
     } else {
-      // This handles all simple page navigations
       // @ts-ignore
       setCurrentPage({ name: page });
     }
@@ -65,7 +64,6 @@ function App() {
       case "doctors":
         return <DoctorsPage onNavigate={handleNavigate} />;
       case "doctorProfile":
-        // We now pass the navigate function down so it can navigate to the booking page
         return <DoctorProfilePage doctorId={currentPage.id} onNavigate={handleNavigate} />;
       case "blog":
         return <BlogPage />;
@@ -81,11 +79,15 @@ function App() {
         return <MyProfilePage />;
       case "settings":
         return <SettingsPage />;
-      
-      // --- NEW CASE FOR BOOKING PAGE ---
       case "bookAppointment":
         return <AppointmentBookingPage doctorId={currentPage.doctorId} doctorName={currentPage.doctorName} />;
-        
+      case "patientDashboard":
+        return <PatientDashboardPage />;
+      
+      // --- NEW CASE FOR DOCTOR DASHBOARD ---
+      case "doctorDashboard":
+        return <DoctorDashboardPage />;
+
       case "home":
       default:
         return <LandingPage />;

@@ -6,7 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 
 interface User {
   id: string;
-  // We can add more user details here later, like email or role
+  role: 'patient' | 'doctor' | 'admin' | null;
 }
 
 interface AuthState {
@@ -18,7 +18,6 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>()(
-  // The 'persist' middleware automatically saves the store's state to localStorage
   persist(
     (set) => ({
       token: null,
@@ -26,12 +25,11 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       login: (token) => {
         try {
-          const decodedToken: { sub: string } = jwtDecode(token);
-          const user: User = { id: decodedToken.sub };
+          const decodedToken: { sub: string, role: User['role'] } = jwtDecode(token);
+          const user: User = { id: decodedToken.sub, role: decodedToken.role };
           set({ token, user, isAuthenticated: true });
         } catch (error) {
           console.error("Failed to decode token:", error);
-          // Handle invalid token case
           set({ token: null, user: null, isAuthenticated: false });
         }
       },
@@ -40,7 +38,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'auth-storage', // The key to use for storing in localStorage
+      name: 'auth-storage',
     }
   )
 );

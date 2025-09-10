@@ -96,6 +96,6 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
     # Create access token
     access_token = create_access_token(
-        data={"sub": str(user.user_id)}
+        data={"sub": str(user.user_id), "role": user.role.value} 
     )
     return {"access_token": access_token, "token_type": "bearer"}
