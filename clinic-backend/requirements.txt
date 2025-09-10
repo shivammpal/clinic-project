@@ -7,3 +7,5 @@ python-jose[cryptography]
 python-jwt
 cloudinary
 python-multipart
+motor
+pydantic-settings
