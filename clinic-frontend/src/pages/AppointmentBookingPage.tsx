@@ -8,7 +8,7 @@ const timeSlots = [
   "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM",
 ];
 
-import type { NavigateFunction } from '../App';
+
 
 // Define props to receive doctor info and navigation function
 type AppointmentBookingPageProps = {

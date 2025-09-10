@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import { useAuthStore } from '../stores/authStore';
+import type { NavigateFunction } from '../App';
 
 // You can reuse the Appointment type from the Patient Dashboard if defined globally
 // Or redefine it here for clarity
@@ -13,7 +14,11 @@ interface Appointment {
   patient_id: string;
 }
 
-const DoctorDashboardPage = () => {
+type DoctorDashboardPageProps = {
+  onNavigate: NavigateFunction;
+};
+
+const DoctorDashboardPage = ({ onNavigate }: DoctorDashboardPageProps) => {
   const [activeTab, setActiveTab] = useState('appointments');
   const token = useAuthStore((state) => state.token);
   

@@ -1,8 +1,13 @@
 // File: clinic-frontend/src/pages/VideoCallPage.tsx
 
 import { useEffect, useRef, useState } from 'react';
+import type { NavigateFunction } from '../App';
 
-const VideoCallPage = () => {
+type VideoCallPageProps = {
+  onNavigate: NavigateFunction;
+};
+
+const VideoCallPage = ({ onNavigate }: VideoCallPageProps) => {
   const localVideoRef = useRef<HTMLVideoElement>(null);
   // Use a ref to hold the stream object. This provides a stable reference
   // that doesn't change on re-renders, fixing the button logic.
