@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import DoctorCard from '../components/DoctorCard';
-import { Page } from '../App';
+import type { NavigateFunction } from '../App';
 
 type Doctor = {
   doctor_id: string;
@@ -12,7 +12,7 @@ type Doctor = {
 };
 
 type DoctorsPageProps = {
-    onNavigate: (page: Page, id: string) => void;
+    onNavigate: NavigateFunction;
 };
 
 const DoctorsPage = ({ onNavigate }: DoctorsPageProps) => {

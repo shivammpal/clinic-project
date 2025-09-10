@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import { useAuthStore } from '../stores/authStore';
-import { Page } from '../App';
+import type { NavigateFunction,page } from '../App';
 import StarRating from '../components/StarRating';
 
 // ... (DoctorProfile type definition)
@@ -13,7 +13,7 @@ type Review = { review_id: string; patient_id: string; rating: number; comment: 
 
 type DoctorProfilePageProps = {
   doctorId: string;
-  onNavigate: (page: Page, data?: { [key: string]: string }) => void;
+  onNavigate: NavigateFunction;
 };
 
 const DoctorProfilePage = ({ doctorId, onNavigate }: DoctorProfilePageProps) => {

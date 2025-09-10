@@ -1,12 +1,12 @@
 // File: clinic-frontend/src/pages/LandingPage.tsx
 
 import { motion } from 'framer-motion';
-import { Page } from '../App';
+import type { NavigateFunction } from '../App';
 
 // We have removed the auth store import because it is not needed here.
 
 type LandingPageProps = {
-  onNavigate: (page: Page) => void;
+  onNavigate: NavigateFunction;
 };
 
 const LandingPage = ({ onNavigate }: LandingPageProps) => {

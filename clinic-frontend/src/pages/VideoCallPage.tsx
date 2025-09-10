@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 
 const VideoCallPage = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null);
-  
   // Use a ref to hold the stream object. This provides a stable reference
   // that doesn't change on re-renders, fixing the button logic.
   const mediaStreamRef = useRef<MediaStream | null>(null);

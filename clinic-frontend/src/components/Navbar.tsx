@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../stores/authStore';
 import AccountDropdown from './AccountDropdown';
-import { Page } from '../App';
+import type { NavigateFunction, Page } from '../App';
 
 type NavbarProps = {
-  onNavigate: (page: Page) => void;
+  onNavigate: NavigateFunction;
 };
 
 const Navbar = ({ onNavigate }: NavbarProps) => {

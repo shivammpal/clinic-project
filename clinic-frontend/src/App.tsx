@@ -4,7 +4,7 @@ import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
-// Import all page components
+// (All your existing page imports)
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -22,9 +22,10 @@ import SettingsPage from "./pages/SettingsPage";
 import AppointmentBookingPage from "./pages/AppointmentBookingPage";
 import PatientDashboardPage from "./pages/PatientDashboardPage";
 import DoctorDashboardPage from "./pages/DoctorDashboardPage";
-import VideoCallPage from "./pages/VideoCallPage"; // <-- *** THIS IS THE FIX ***
+import VideoCallPage from "./pages/VideoCallPage";
 
-type PageState =
+// We keep these types here as the source of truth
+export type PageState =
   | { name: "home" } | { name: "login" } | { name: "register" }
   | { name: "about" } | { name: "services" } | { name: "doctors" }
   | { name: "doctorProfile"; id: string }
@@ -37,11 +38,13 @@ type PageState =
   | { name: "videoCall" };
 
 export type Page = PageState['name'];
+export type NavigateFunction = (page: Page, data?: { [key: string]: string }) => void;
+
 
 function App() {
   const [currentPage, setCurrentPage] = useState<PageState>({ name: "home" });
 
-  const handleNavigate = (page: Page, data?: { [key: string]: string }) => {
+  const handleNavigate: NavigateFunction = (page, data) => {
     if (page === 'doctorProfile' && data?.id) {
       setCurrentPage({ name: page, id: data.id });
     } else if (page === 'bookAppointment' && data?.doctorId && data?.doctorName) {
@@ -54,43 +57,27 @@ function App() {
 
   const renderPage = () => {
     switch (currentPage.name) {
-      case "login":
-        return <LoginPage onNavigate={handleNavigate} />;
-      case "register":
-        return <RegisterPage onNavigate={handleNavigate} />;
-      case "about":
-        return <AboutUsPage />;
-      case "services":
-        return <ServicesPage />;
-      case "doctors":
-        return <DoctorsPage onNavigate={handleNavigate} />;
-      case "doctorProfile":
-        return <DoctorProfilePage doctorId={currentPage.id} onNavigate={handleNavigate} />;
-      case "blog":
-        return <BlogPage />;
-      case "faq":
-        return <FAQPage />;
-      case "contact":
-        return <ContactUsPage />;
-      case "privacy":
-        return <PrivacyPolicyPage />;
-      case "emergency":
-        return <EmergencyPage />; // <-- *** THIS IS ALSO FIXED ***
-      case "myProfile":
-        return <MyProfilePage />;
-      case "settings":
-        return <SettingsPage />;
-      case "bookAppointment":
-        return <AppointmentBookingPage doctorId={currentPage.doctorId} doctorName={currentPage.doctorName} />;
-      case "patientDashboard":
-        return <PatientDashboardPage onNavigate={handleNavigate} />;
-      case "doctorDashboard":
-        return <DoctorDashboardPage onNavigate={handleNavigate}/>;
-      case "videoCall":
-        return <VideoCallPage onNavigate={handleNavigate} />;
-      case "home":
-      default:
-        return <LandingPage onNavigate={handleNavigate} />;
+      case "login": return <LoginPage onNavigate={handleNavigate} />;
+      case "register": return <RegisterPage onNavigate={handleNavigate} />;
+      case "doctors": return <DoctorsPage onNavigate={handleNavigate} />;
+      case "doctorProfile": return <DoctorProfilePage doctorId={currentPage.id} onNavigate={handleNavigate} />;
+      case "patientDashboard": return <PatientDashboardPage onNavigate={handleNavigate} />;
+      case "doctorDashboard": return <DoctorDashboardPage onNavigate={handleNavigate}/>;
+      case "videoCall": return <VideoCallPage onNavigate={handleNavigate} />;
+      case "home": return <LandingPage onNavigate={handleNavigate} />;
+      
+      // No-prop pages
+      case "about": return <AboutUsPage />;
+      case "services": return <ServicesPage />;
+      case "blog": return <BlogPage />;
+      case "faq": return <FAQPage />;
+      case "contact": return <ContactUsPage />;
+      case "privacy": return <PrivacyPolicyPage />;
+      case "emergency": return <EmergencyPage />;
+      case "myProfile": return <MyProfilePage />;
+      case "settings": return <SettingsPage />;
+      case "bookAppointment": return <AppointmentBookingPage doctorId={currentPage.doctorId} doctorName={currentPage.doctorName} onNavigate={handleNavigate} />;
+      default: return <LandingPage onNavigate={handleNavigate} />;
     }
   };
 

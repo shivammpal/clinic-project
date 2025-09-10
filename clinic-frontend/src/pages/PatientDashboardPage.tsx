@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import { useAuthStore } from '../stores/authStore';
-import { Page } from '../App'; // <-- NEW IMPORT
+import type { NavigateFunction,page } from '../App';// <-- NEW IMPORT
 
 // --- Your existing type definitions (unchanged) ---
 interface Appointment {
@@ -25,7 +25,7 @@ type Tab = 'appointments' | 'prescriptions' | 'profile';
 
 // --- NEW: Define props to accept the navigation function ---
 type PatientDashboardPageProps = {
-    onNavigate: (page: Page) => void;
+    onNavigate: NavigateFunction;
 }
 
 // --- UPDATE: Component now accepts props ---

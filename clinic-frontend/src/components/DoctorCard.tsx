@@ -1,7 +1,7 @@
 // File: clinic-frontend/src/components/DoctorCard.tsx
 
 import { motion } from 'framer-motion';
-import { Page } from '../App';
+import type { NavigateFunction } from '../App';
 
 type Doctor = {
   doctor_id: string;
@@ -12,7 +12,7 @@ type Doctor = {
 
 type DoctorCardProps = {
   doctor: Doctor;
-  onNavigate: (page: Page, id: string) => void;
+  onNavigate: NavigateFunction;
 };
 
 const DoctorCard = ({ doctor, onNavigate }: DoctorCardProps) => {

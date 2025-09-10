@@ -3,10 +3,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../stores/authStore';
-import { Page } from '../App';
-
+import type { NavigateFunction, Page } from '../App';
 type AccountDropdownProps = {
-  onNavigate: (page: Page, data?: { [key: string]: string }) => void;
+  onNavigate: NavigateFunction;
 };
 
 const AccountDropdown = ({ onNavigate }: AccountDropdownProps) => {

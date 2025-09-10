@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../stores/authStore';
 import axiosInstance from '../api/axiosInstance';
-import { Page } from '../App'; // <-- Import the Page type
+import type { NavigateFunction,page } from '../App'; // <-- Import the Page type
 
 // *** THIS IS THE FIX ***
 // The type for onNavigate now matches the one in App.tsx
 type LoginPageProps = {
-  onNavigate: (page: Page, data?: { [key: string]: string }) => void;
+  onNavigate: NavigateFunction;
 };
 
 const LoginPage = ({ onNavigate }: LoginPageProps) => {
