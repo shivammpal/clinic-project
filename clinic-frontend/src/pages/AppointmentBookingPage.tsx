@@ -14,10 +14,9 @@ import type { NavigateFunction } from '../App';
 type AppointmentBookingPageProps = {
   doctorId: string;
   doctorName: string; // We'll pass the doctor's name for a better UX
-  onNavigate: NavigateFunction;
 };
 
-const AppointmentBookingPage = ({ doctorId, doctorName, onNavigate }: AppointmentBookingPageProps) => {
+const AppointmentBookingPage = ({ doctorId, doctorName }: AppointmentBookingPageProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
 

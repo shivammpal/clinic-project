@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../stores/authStore';
 import axiosInstance from '../api/axiosInstance';
-import type { NavigateFunction, Page } from '../App'; // <-- Import the Page type
+import type { NavigateFunction } from '../App';
 
 // *** THIS IS THE FIX ***
 // The type for onNavigate now matches the one in App.tsx

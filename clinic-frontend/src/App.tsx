@@ -76,7 +76,7 @@ function App() {
       case "emergency": return <EmergencyPage />;
       case "myProfile": return <MyProfilePage />;
       case "settings": return <SettingsPage />;
-      case "bookAppointment": return <AppointmentBookingPage doctorId={currentPage.doctorId} doctorName={currentPage.doctorName} onNavigate={handleNavigate} />;
+      case "bookAppointment": return <AppointmentBookingPage doctorId={currentPage.doctorId} doctorName={currentPage.doctorName} />;
       default: return <LandingPage onNavigate={handleNavigate} />;
     }
   };

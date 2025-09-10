@@ -1,6 +1,6 @@
 // File: clinic-frontend/src/components/Footer.tsx
 
-import type { NavigateFunction, Page } from '../App'; // Import the Page type
+import type { NavigateFunction } from '../App';
 
 type FooterProps = {
   onNavigate: NavigateFunction;
