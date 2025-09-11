@@ -1,6 +1,11 @@
-// File: clinic-frontend/src/components/StarRating.tsx
+import React from "react";
 
-const StarRating = ({ rating }: { rating: number }) => {
+type StarRatingProps = {
+  rating: number;
+  onRatingChange?: (newRating: number) => void; // optional prop
+};
+
+const StarRating: React.FC<StarRatingProps> = ({ rating, onRatingChange }) => {
   return (
     <div className="flex items-center">
       {[...Array(5)].map((_, index) => {
@@ -8,7 +13,10 @@ const StarRating = ({ rating }: { rating: number }) => {
         return (
           <svg
             key={index}
-            className={`w-5 h-5 ${starValue <= rating ? 'text-amber-400' : 'text-slate-600'}`}
+            onClick={() => onRatingChange?.(starValue)} // call handler if provided
+            className={`w-6 h-6 cursor-pointer transition-colors ${
+              starValue <= rating ? "text-amber-400" : "text-slate-600"
+            }`}
             fill="currentColor"
             viewBox="0 0 20 20"
           >
