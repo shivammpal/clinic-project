@@ -28,6 +28,7 @@ app = FastAPI(lifespan=lifespan)
 # CONFIGURE CORS MIDDLEWARE
 # ===================================================================
 origins = [
+    "https://clinic-project-ebon.vercel.app",
     "http://localhost:5173", # The origin of your React frontend
     "http://localhost:3000", # A common alternative port for React dev
 ]
