@@ -3,11 +3,22 @@ import axiosInstance from '../api/axiosInstance';
 import { useAuthStore } from '../stores/authStore';
 import StarRating from '../components/StarRating';
 
-// ... (DoctorProfile type definition)
-type DoctorProfile = { full_name: string; specialty: string; photo_url: string | null; bio: string | null; };
+// Doctor profile type
+type DoctorProfile = { 
+  full_name: string; 
+  specialty: string; 
+  photo_url: string | null; 
+  bio: string | null; 
+};
 
-// NEW: Review type
-type Review = { review_id: string; patient_id: string; rating: number; comment: string | null; created_at: string; };
+// Review type
+type Review = { 
+  review_id: string; 
+  patient_id: string; 
+  rating: number; 
+  comment: string | null; 
+  created_at: string; 
+};
 
 type DoctorProfilePageProps = {
   doctorId: string;
@@ -71,7 +82,20 @@ const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
     <div className="max-w-4xl mx-auto py-12 px-4">
       {/* Doctor Info Section */}
       <div className="bg-dark-card rounded-lg shadow-xl p-8 md:flex gap-8">
-        {/* ... (doctor details JSX) ... */}
+        <div className="flex-shrink-0">
+          {doctor.photo_url ? (
+            <img src={doctor.photo_url} alt={doctor.full_name} className="w-40 h-40 rounded-full object-cover" />
+          ) : (
+            <div className="w-40 h-40 rounded-full bg-gray-600 flex items-center justify-center text-white text-xl">
+              {doctor.full_name[0]}
+            </div>
+          )}
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold">{doctor.full_name}</h1>
+          <p className="text-lg text-dark-subtle">{doctor.specialty}</p>
+          {doctor.bio && <p className="mt-4 text-dark-text">{doctor.bio}</p>}
+        </div>
       </div>
 
       {/* Reviews Section */}
@@ -83,7 +107,22 @@ const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
           <div className="bg-dark-card p-6 rounded-lg mb-8 border border-slate-700">
             <h3 className="text-xl font-semibold mb-4">Leave a Review</h3>
             <form onSubmit={handleReviewSubmit}>
-              {/* ... (form JSX) ... */}
+              <StarRating rating={rating} onRatingChange={setRating} />
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Write your review..."
+                className="w-full mt-4 p-2 rounded-md bg-dark-bg border border-slate-600 text-dark-text"
+              />
+              {reviewError && (
+                <p className="text-red-500 mt-2">{reviewError}</p>
+              )}
+              <button
+                type="submit"
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                Submit Review
+              </button>
             </form>
           </div>
         )}
