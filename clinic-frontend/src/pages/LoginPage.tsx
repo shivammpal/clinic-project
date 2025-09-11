@@ -29,7 +29,7 @@ const LoginPage = ({ onNavigate }: LoginPageProps) => {
 
     try {
       const response = await axios.post(
-        'https://clinic-project-53n7.onrender.com/auth/login', // ✅ full backend URL
+        'https://clinic-project-53n7.onrender.com', // ✅ full backend URL
         formData,
         {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
