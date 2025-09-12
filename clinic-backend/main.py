@@ -2,20 +2,18 @@
 
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from fastapi.middleware.cors import CORSMiddleware # <--- IMPORT THIS
+from fastapi.middleware.cors import CORSMiddleware
 
 # Import your initializers
 from core.db import init_db
 from core.cloudinary_utils import configure_cloudinary
 
 # Import your API routers
-from api.routes import auth_routes, admin_routes, public_routes,user_routes,doctor_routes,websockets,review_routes
+from api.routes import auth_routes, admin_routes, public_routes, user_routes, doctor_routes, websockets, review_routes
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """
-    Actions to perform on application startup and shutdown.
-    """
+    """ Actions to perform on application startup and shutdown. """
     print("Application startup...")
     await init_db()
     configure_cloudinary()
@@ -29,30 +27,30 @@ app = FastAPI(lifespan=lifespan)
 # ===================================================================
 origins = [
     "https://clinic-project-ebon.vercel.app",
-    "https://clinic-project-ebon.vercel.app/",  # Added with trailing slash
-    "http://localhost:5173", # The origin of your React frontend
-    "http://localhost:3000", # A common alternative port for React dev
+    "http://localhost:5173",
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins, # Allows specific origins to make requests
+    allow_origins=origins,          # restrict later if needed
     allow_credentials=True,
-    allow_methods=["*"], # Allows all methods (GET, POST, etc.)
-    allow_headers=["*"], # Allows all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
 # ===================================================================
+# Include the API routers (with prefixes where needed)
+# ===================================================================
+app.include_router(auth_routes.router, prefix="/auth", tags=["Auth"])
+app.include_router(admin_routes.router, prefix="/admin", tags=["Admin"])
+app.include_router(public_routes.router, prefix="/public", tags=["Public"])
+app.include_router(user_routes.router, prefix="/users", tags=["Users"])
+app.include_router(doctor_routes.router, prefix="/doctors", tags=["Doctors"])
+app.include_router(websockets.router, prefix="/ws", tags=["Websockets"])
+app.include_router(review_routes.router, prefix="/reviews", tags=["Reviews"])
 
-
-# Include the API routers
-app.include_router(auth_routes.router)
-app.include_router(admin_routes.router)
-app.include_router(public_routes.router)
-app.include_router(user_routes.router)
-app.include_router(doctor_routes.router)
-app.include_router(websockets.router)
-app.include_router(review_routes.router)
-
+# Root route
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Online Clinic API!"}

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import { useAuthStore } from '../stores/authStore';
 import StarRating from '../components/StarRating';
+import { shallow } from 'zustand/shallow'; // NEW: Import shallow
 
 // Doctor profile type
 type DoctorProfile = { 
@@ -27,17 +28,24 @@ type DoctorProfilePageProps = {
 const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
   const [doctor, setDoctor] = useState<DoctorProfile | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
-  const { isAuthenticated, user, token } = useAuthStore(state => ({
-    isAuthenticated: state.isAuthenticated,
-    user: state.user,
-    token: state.token
-  }));
+  
+  // --- THIS IS THE CORRECTED LINE ---
+  const { isAuthenticated, user, token } = useAuthStore(
+    (state) => ({
+      isAuthenticated: state.isAuthenticated,
+      user: state.user,
+      token: state.token,
+    }),
+    shallow // This prevents the infinite loop
+  );
+  // --- END OF CORRECTION ---
 
   // State for the review form
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [reviewError, setReviewError] = useState('');
 
+  // The dependency array was already correct, the issue was with the store selector
   useEffect(() => {
     if (!doctorId) return;
     const fetchDoctorData = async () => {
@@ -67,7 +75,6 @@ const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
         { rating, comment },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      // Add the new review to the top of the list for immediate feedback
       setReviews([response.data, ...reviews]);
       setRating(0);
       setComment('');
@@ -102,7 +109,7 @@ const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
       <div className="mt-12">
         <h2 className="text-3xl font-bold text-dark-text mb-6">Patient Reviews</h2>
 
-        {/* Review Submission Form (Only for logged-in patients) */}
+        {/* Review Submission Form */}
         {isAuthenticated && user?.role === 'patient' && (
           <div className="bg-dark-card p-6 rounded-lg mb-8 border border-slate-700">
             <h3 className="text-xl font-semibold mb-4">Leave a Review</h3>
@@ -114,9 +121,7 @@ const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
                 placeholder="Write your review..."
                 className="w-full mt-4 p-2 rounded-md bg-dark-bg border border-slate-600 text-dark-text"
               />
-              {reviewError && (
-                <p className="text-red-500 mt-2">{reviewError}</p>
-              )}
+              {reviewError && <p className="text-red-500 mt-2">{reviewError}</p>}
               <button
                 type="submit"
                 className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"

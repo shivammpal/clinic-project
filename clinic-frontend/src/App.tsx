@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useCallback } from "react"; // <-- IMPORT useCallback
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { useAuthStore } from "./stores/authStore";
 
+// Import all page components
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -20,6 +22,8 @@ import AppointmentBookingPage from "./pages/AppointmentBookingPage";
 import PatientDashboardPage from "./pages/PatientDashboardPage";
 import DoctorDashboardPage from "./pages/DoctorDashboardPage";
 import VideoCallPage from "./pages/VideoCallPage";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
 
 export type PageState =
   | { name: "home" } | { name: "login" } | { name: "register" }
@@ -31,6 +35,7 @@ export type PageState =
   | { name: "bookAppointment"; doctorId: string; doctorName: string }
   | { name: "patientDashboard" }
   | { name: "doctorDashboard" }
+  | { name: "adminDashboard" }
   | { name: "videoCall" };
 
 export type Page = PageState["name"];
@@ -38,8 +43,10 @@ export type NavigateFunction = (page: Page, data?: { [key: string]: string }) =>
 
 function App() {
   const [currentPage, setCurrentPage] = useState<PageState>({ name: "home" });
+  const user = useAuthStore((state) => state.user);
 
-  const handleNavigate: NavigateFunction = (page, data) => {
+  // --- THIS IS THE CORRECTED FUNCTION ---
+  const handleNavigate: NavigateFunction = useCallback((page, data) => {
     if (page === "doctorProfile" && data?.id) {
       setCurrentPage({ name: page, id: data.id });
     } else if (page === "bookAppointment" && data?.doctorId && data?.doctorName) {
@@ -48,19 +55,26 @@ function App() {
       // @ts-ignore
       setCurrentPage({ name: page });
     }
-  };
+  }, []); // <-- Empty dependency array means the function is created only once
+  // --- END OF CORRECTION ---
 
   const renderPage = () => {
+    // This switch statement remains the same
     switch (currentPage.name) {
+      case "adminDashboard":
+        return user?.role === 'admin' ? <AdminDashboardPage /> : <UnauthorizedPage onNavigate={handleNavigate} />;
+      case "doctorDashboard":
+        return user?.role === 'doctor' ? <DoctorDashboardPage /> : <UnauthorizedPage onNavigate={handleNavigate} />;
+      case "patientDashboard":
+        return user?.role === 'patient' ? <PatientDashboardPage onNavigate={handleNavigate} /> : <UnauthorizedPage onNavigate={handleNavigate} />;
+      
       case "login": return <LoginPage onNavigate={handleNavigate} />;
       case "register": return <RegisterPage onNavigate={handleNavigate} />;
       case "doctors": return <DoctorsPage onNavigate={handleNavigate} />;
       case "doctorProfile": return <DoctorProfilePage doctorId={currentPage.id} />;
-      case "patientDashboard": return <PatientDashboardPage onNavigate={handleNavigate} />;
-      case "doctorDashboard": return <DoctorDashboardPage />;
-      case "videoCall": return <VideoCallPage />;
+      case "videoCall": return <VideoCallPage onNavigate={handleNavigate} />;
       case "home": return <LandingPage onNavigate={handleNavigate} />;
-
+      
       case "about": return <AboutUsPage />;
       case "services": return <ServicesPage />;
       case "blog": return <BlogPage />;
@@ -70,8 +84,7 @@ function App() {
       case "emergency": return <EmergencyPage />;
       case "myProfile": return <MyProfilePage />;
       case "settings": return <SettingsPage />;
-      case "bookAppointment":
-        return <AppointmentBookingPage doctorId={currentPage.doctorId} doctorName={currentPage.doctorName} />;
+      case "bookAppointment": return <AppointmentBookingPage doctorId={currentPage.doctorId} doctorName={currentPage.doctorName} onNavigate={handleNavigate} />;
       default: return <LandingPage onNavigate={handleNavigate} />;
     }
   };

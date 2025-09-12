@@ -1,5 +1,3 @@
-# File: clinic-backend/api/dependencies.py
-
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from uuid import UUID
@@ -21,11 +19,22 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
         headers={"WWW-Authenticate": "Bearer"},
     )
     payload = decode_access_token(token)
-    user_id = payload.get("user_id")
+    
+    # --- THIS IS THE CORRECTED LINE ---
+    user_id = payload.get("user_id") # Use "user_id" instead of "sub"
+    # --- END OF CORRECTION ---
+
     if user_id is None:
         raise credentials_exception
 
-    user = await User.get(UUID(user_id))
+    # This line might fail if the user_id from the token is invalid.
+    # Beanie's `get` method expects a valid document ID.
+    try:
+        user = await User.find_one(User.user_id == UUID(user_id))
+    except (ValueError, TypeError):
+        # This handles cases where user_id is not a valid UUID string
+        raise credentials_exception
+        
     if user is None:
         raise credentials_exception
     return user

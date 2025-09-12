@@ -1,5 +1,3 @@
-# File: clinic-backend/api/routes/review_routes.py
-
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 from uuid import UUID
@@ -9,7 +7,8 @@ from models.clinic_models import Review
 from schemas.clinic_schemas import ReviewCreate, ReviewOut
 from api.dependencies import get_current_user
 
-router = APIRouter(prefix="/reviews", tags=["Reviews"])
+# CORRECTED LINE: Removed the prefix="/reviews" from here
+router = APIRouter(tags=["Reviews"])
 
 @router.post("/{doctor_id}", response_model=ReviewOut, status_code=201)
 async def create_review(
@@ -22,8 +21,6 @@ async def create_review(
     """
     if current_user.role != Role.PATIENT:
         raise HTTPException(status_code=403, detail="Only patients can leave reviews.")
-
-    # A real app might check if the patient has had a completed appointment with the doctor
     
     new_review = Review(
         doctor_id=doctor_id,

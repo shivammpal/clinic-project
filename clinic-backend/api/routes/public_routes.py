@@ -1,14 +1,12 @@
-# File: clinic-backend/api/routes/public_routes.py
-
 from fastapi import APIRouter, HTTPException
 from typing import List
 from uuid import UUID
 
-# Import models and the public-facing schema
 from models.user_models import DoctorProfile, DoctorStatus
 from schemas.user_schemas import DoctorOut 
 
-router = APIRouter(prefix="/public", tags=["Public Data"])
+# CORRECTED LINE: Removed the prefix="/public" from here
+router = APIRouter(tags=["Public Data"])
 
 @router.get("/doctors", response_model=List[DoctorOut])
 async def get_verified_doctors():

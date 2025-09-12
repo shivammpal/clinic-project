@@ -5,7 +5,7 @@ from pydantic import Field, EmailStr
 from typing import Optional
 from enum import Enum
 from uuid import UUID, uuid4
-import datetime
+from datetime import datetime, timezone
 
 class Role(str, Enum):
     """
@@ -25,7 +25,7 @@ class User(Document):
     hashed_password: str
     role: Role = Field(default=Role.PATIENT)
     is_active: bool = Field(default=True)
-    created_at: datetime.datetime = Field(default_factory=datetime.datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     class Settings:
         name = "users"

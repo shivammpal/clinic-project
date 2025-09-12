@@ -1,14 +1,17 @@
-# File: clinic-backend/scripts/create_admin.py
-
 import asyncio
 import os
 import sys
 from getpass import getpass
+from dotenv import load_dotenv # NEW: Import the load_dotenv function
 
-# This is a bit of a hack to allow the script to import from the parent directory
-# where all your application modules (core, models, etc.) are.
+# This allows the script to import from the parent directory
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# NEW: Find the .env file in the project root and load it
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
+load_dotenv(dotenv_path=dotenv_path)
+
+# These imports MUST come AFTER loading the .env file
 from core.db import init_db
 from core.auth import get_password_hash
 from models.user_models import User, Role
@@ -19,17 +22,14 @@ async def main():
     """
     print("--- Admin User Creation Script ---")
 
-    # We must initialize the database connection first
     await init_db()
 
-    # Check if an admin user already exists
     existing_admin = await User.find_one(User.role == Role.ADMIN)
     if existing_admin:
         print(f"An admin user already exists with the email: {existing_admin.email}")
         print("Script will now exit.")
         return
 
-    # Get user input
     email = input("Enter admin email: ")
     password = getpass("Enter admin password: ")
     confirm_password = getpass("Confirm admin password: ")
@@ -38,18 +38,15 @@ async def main():
         print("Passwords do not match. Please try again.")
         return
 
-    # Hash the password
     hashed_password = get_password_hash(password)
 
-    # Create the new admin user
     admin_user = User(
         email=email,
         hashed_password=hashed_password,
         role=Role.ADMIN,
-        is_active=True # Admins should be active by default
+        is_active=True
     )
 
-    # Insert into the database
     await admin_user.insert()
 
     print("\nAdmin user created successfully!")
@@ -57,8 +54,5 @@ async def main():
     print(f"User ID: {admin_user.user_id}")
     print("---------------------------------")
 
-
 if __name__ == "__main__":
-    # The script is designed to be run from the command line.
-    # It uses asyncio.run() to execute the async main function.
     asyncio.run(main())
