@@ -28,9 +28,7 @@ const AdminDashboardPage = () => {
       // Make sure your main.py inclusion is correct. If it is, this URL is correct.
       // If you removed the prefix from admin_routes.py, then the URL is '/admin/doctors/pending'.
       // I'll assume the prefix in main.py is the source of truth.
-      const response = await axiosInstance.get('/admin/doctors/pending', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axiosInstance.get('/admin/doctors/pending');
       setPendingDoctors(response.data);
     } catch (error) {
       console.error("Failed to fetch pending doctors", error);
@@ -48,11 +46,8 @@ const AdminDashboardPage = () => {
     try {
         // Updated to call the single PATCH endpoint and send data in the body
         await axiosInstance.patch(
-            `/admin/doctors/${doctorId}/status`, 
-            { status: newStatus }, // The new status is now sent in the request body
-            {
-                headers: { Authorization: `Bearer ${token}` }
-            }
+            `/admin/doctors/${doctorId}/status`,
+            { status: newStatus } // The new status is now sent in the request body
         );
         setMessage(`Doctor has been successfully ${newStatus}.`);
         setPendingDoctors(prev => prev.filter(doc => doc.doctor_id !== doctorId));

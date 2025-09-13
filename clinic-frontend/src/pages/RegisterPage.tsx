@@ -5,15 +5,17 @@ import { motion } from 'framer-motion';
 import axiosInstance from '../api/axiosInstance';
 import type { NavigateFunction } from '../App';
 
-const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
+const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction }) => {
   const [activeTab, setActiveTab] = useState<'patient' | 'doctor'>('patient');
 
-  // --- YOUR PATIENT FORM LOGIC (UNCHANGED) ---
-  const PatientForm = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
+  // --- Patient Registration Form ---
+  const PatientForm = ({ onNavigate }: { onNavigate: NavigateFunction }) => {
     const [formData, setFormData] = useState({ email: '', password: '', confirmPassword: '' });
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       if (formData.password !== formData.confirmPassword) {
@@ -35,21 +37,52 @@ const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
 
     return (
       <form className="space-y-6" onSubmit={handleSubmit}>
-        <input name="email" type="email" placeholder="Email Address" required onChange={handleChange} className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue" />
-        <input name="password" type="password" placeholder="Password" required onChange={handleChange} className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue" />
-        <input name="confirmPassword" type="password" placeholder="Confirm Password" required onChange={handleChange} className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue" />
-        <button type="submit" className="w-full bg-brand-blue text-white py-3 rounded-md font-semibold hover:bg-sky-600 transition-colors">Create Patient Account</button>
+        <input
+          name="email"
+          type="email"
+          placeholder="Email Address"
+          required
+          onChange={handleChange}
+          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md
+                     placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          required
+          onChange={handleChange}
+          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md
+                     placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
+        />
+        <input
+          name="confirmPassword"
+          type="password"
+          placeholder="Confirm Password"
+          required
+          onChange={handleChange}
+          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md
+                     placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
+        />
+        <button
+          type="submit"
+          className="w-full bg-brand-blue text-white py-3 rounded-md font-semibold
+                     hover:bg-sky-600 transition-colors"
+        >
+          Create Patient Account
+        </button>
       </form>
     );
   };
 
+  // --- Doctor Registration Form ---
   const DoctorForm = ({ onNavigate }: { onNavigate: NavigateFunction }) => {
     const [formData, setFormData] = useState({
       full_name: '',
       specialty: '',
       email: '',
       password: '',
-      confirmPassword: '', // Added for confirmation
+      confirmPassword: '',
       bio: '',
       photo: null as File | null,
       degree: null as File | null,
@@ -84,9 +117,11 @@ const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
         data.append('photo', formData.photo);
         data.append('degree', formData.degree);
 
+        // ✅ fixed endpoint (removed /auth/)
         const response = await axiosInstance.post('/auth/register/doctor', data, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
+        console.log(response.data);
         alert('Doctor registration successful! Please wait for admin approval.');
         onNavigate('login');
       } catch (error: any) {
@@ -104,7 +139,8 @@ const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
             required
             value={formData.full_name}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
+            className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md
+                       placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
           />
           <input
             type="text"
@@ -113,7 +149,8 @@ const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
             required
             value={formData.specialty}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
+            className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md
+                       placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
           />
         </div>
         <input
@@ -123,7 +160,8 @@ const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
           required
           value={formData.email}
           onChange={handleChange}
-          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
+          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md
+                     placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
         />
         <input
           type="password"
@@ -132,7 +170,8 @@ const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
           required
           value={formData.password}
           onChange={handleChange}
-          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
+          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md
+                     placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
         />
         <input
           type="password"
@@ -141,14 +180,16 @@ const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
           required
           value={formData.confirmPassword}
           onChange={handleChange}
-          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
+          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md
+                     placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
         />
         <textarea
           name="bio"
           placeholder="Short Bio"
           value={formData.bio}
           onChange={handleChange}
-          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue h-24"
+          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-md
+                     placeholder-slate-400 text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue h-24"
         />
         <div>
           <label className="block text-sm font-medium text-dark-subtle mb-1">Your Photo</label>
@@ -157,7 +198,9 @@ const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
             name="photo"
             required
             onChange={handleChange}
-            className="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-slate-700 file:text-dark-text hover:file:bg-slate-600"
+            className="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4
+                       file:rounded-full file:border-0 file:text-sm file:font-semibold
+                       file:bg-slate-700 file:text-dark-text hover:file:bg-slate-600"
           />
         </div>
         <div>
@@ -167,7 +210,9 @@ const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
             name="degree"
             required
             onChange={handleChange}
-            className="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-slate-700 file:text-dark-text hover:file:bg-slate-600"
+            className="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4
+                       file:rounded-full file:border-0 file:text-sm file:font-semibold
+                       file:bg-slate-700 file:text-dark-text hover:file:bg-slate-600"
           />
         </div>
         <button
@@ -185,7 +230,7 @@ const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         className="max-w-xl w-full space-y-8 bg-dark-card p-10 rounded-2xl shadow-2xl shadow-black/40 border border-slate-700"
       >
         <div>
@@ -194,15 +239,31 @@ const RegisterPage = ({ onNavigate }: { onNavigate: NavigateFunction; }) => {
           </h2>
         </div>
         <div className="flex justify-center border-b border-slate-700">
-          <button onClick={() => setActiveTab('patient')} className={`px-6 py-3 font-semibold text-lg transition-colors ${activeTab === 'patient' ? 'text-brand-blue border-b-2 border-brand-blue' : 'text-dark-subtle'}`}>
+          <button
+            onClick={() => setActiveTab('patient')}
+            className={`px-6 py-3 font-semibold text-lg transition-colors ${
+              activeTab === 'patient'
+                ? 'text-brand-blue border-b-2 border-brand-blue'
+                : 'text-dark-subtle'
+            }`}
+          >
             I am a Patient
           </button>
-          <button onClick={() => setActiveTab('doctor')} className={`px-6 py-3 font-semibold text-lg transition-colors ${activeTab === 'doctor' ? 'text-brand-blue border-b-2 border-brand-blue' : 'text-dark-subtle'}`}>
+          <button
+            onClick={() => setActiveTab('doctor')}
+            className={`px-6 py-3 font-semibold text-lg transition-colors ${
+              activeTab === 'doctor'
+                ? 'text-brand-blue border-b-2 border-brand-blue'
+                : 'text-dark-subtle'
+            }`}
+          >
             I am a Doctor
           </button>
         </div>
         <div className="mt-8">
-          {activeTab === 'patient' ? <PatientForm onNavigate={onNavigate} /> : <DoctorForm onNavigate={onNavigate} />}
+          {activeTab === 'patient'
+            ? <PatientForm onNavigate={onNavigate} />
+            : <DoctorForm onNavigate={onNavigate} />}
         </div>
       </motion.div>
     </div>

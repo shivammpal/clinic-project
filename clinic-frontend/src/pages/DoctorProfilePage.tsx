@@ -1,8 +1,9 @@
+// File: clinic-frontend/src/pages/DoctorProfilePage.tsx
+
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import { useAuthStore } from '../stores/authStore';
 import StarRating from '../components/StarRating';
-import { shallow } from 'zustand/shallow'; // NEW: Import shallow
 
 // Doctor profile type
 type DoctorProfile = { 
@@ -28,24 +29,18 @@ type DoctorProfilePageProps = {
 const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
   const [doctor, setDoctor] = useState<DoctorProfile | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
-  
-  // --- THIS IS THE CORRECTED LINE ---
-  const { isAuthenticated, user, token } = useAuthStore(
-    (state) => ({
-      isAuthenticated: state.isAuthenticated,
-      user: state.user,
-      token: state.token,
-    }),
-    shallow // This prevents the infinite loop
-  );
-  // --- END OF CORRECTION ---
 
-  // State for the review form
+  // ✅ Safe store usage (no infinite loop)
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const user = useAuthStore((state) => state.user);
+  const token = useAuthStore((state) => state.token);
+
+  // Review form state
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [reviewError, setReviewError] = useState('');
 
-  // The dependency array was already correct, the issue was with the store selector
+  // Fetch doctor details + reviews
   useEffect(() => {
     if (!doctorId) return;
     const fetchDoctorData = async () => {
@@ -63,6 +58,7 @@ const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
     fetchDoctorData();
   }, [doctorId]);
 
+  // Submit new review
   const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (rating === 0) {
@@ -71,7 +67,8 @@ const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
     }
     setReviewError('');
     try {
-      const response = await axiosInstance.post(`/reviews/${doctorId}`,
+      const response = await axiosInstance.post(
+        `/reviews/${doctorId}`,
         { rating, comment },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -87,11 +84,15 @@ const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
-      {/* Doctor Info Section */}
+      {/* Doctor Info */}
       <div className="bg-dark-card rounded-lg shadow-xl p-8 md:flex gap-8">
         <div className="flex-shrink-0">
           {doctor.photo_url ? (
-            <img src={doctor.photo_url} alt={doctor.full_name} className="w-40 h-40 rounded-full object-cover" />
+            <img
+              src={doctor.photo_url}
+              alt={doctor.full_name}
+              className="w-40 h-40 rounded-full object-cover"
+            />
           ) : (
             <div className="w-40 h-40 rounded-full bg-gray-600 flex items-center justify-center text-white text-xl">
               {doctor.full_name[0]}
@@ -105,11 +106,11 @@ const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
         </div>
       </div>
 
-      {/* Reviews Section */}
+      {/* Reviews */}
       <div className="mt-12">
         <h2 className="text-3xl font-bold text-dark-text mb-6">Patient Reviews</h2>
 
-        {/* Review Submission Form */}
+        {/* Review Form */}
         {isAuthenticated && user?.role === 'patient' && (
           <div className="bg-dark-card p-6 rounded-lg mb-8 border border-slate-700">
             <h3 className="text-xl font-semibold mb-4">Leave a Review</h3>
@@ -132,20 +133,24 @@ const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
           </div>
         )}
 
-        {/* Display Existing Reviews */}
+        {/* Existing Reviews */}
         <div className="space-y-6">
-          {reviews.length > 0 ? reviews.map(review => (
-            <div key={review.review_id} className="bg-dark-card p-5 rounded-lg">
-              <div className="flex items-center justify-between">
-                <p className="font-semibold text-dark-text">Anonymous Patient</p>
-                <StarRating rating={review.rating} />
+          {reviews.length > 0 ? (
+            reviews.map((review) => (
+              <div key={review.review_id} className="bg-dark-card p-5 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <p className="font-semibold text-dark-text">Anonymous Patient</p>
+                  <StarRating rating={review.rating} />
+                </div>
+                <p className="text-dark-subtle mt-2">{review.comment}</p>
+                <p className="text-xs text-slate-500 text-right mt-3">
+                  {new Date(review.created_at).toLocaleDateString()}
+                </p>
               </div>
-              <p className="text-dark-subtle mt-2">{review.comment}</p>
-              <p className="text-xs text-slate-500 text-right mt-3">
-                {new Date(review.created_at).toLocaleDateString()}
-              </p>
-            </div>
-          )) : <p className="text-dark-subtle">This doctor has no reviews yet.</p>}
+            ))
+          ) : (
+            <p className="text-dark-subtle">This doctor has no reviews yet.</p>
+          )}
         </div>
       </div>
     </div>

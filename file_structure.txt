@@ -1,0 +1,95 @@
+clinic/
+├── TODO.md
+├── clinic-backend/
+│   ├── .gitignore
+│   ├── main.py
+│   ├── requirements.txt
+│   ├── api/
+│   │   ├── __init__.py
+│   │   ├── dependencies.py
+│   │   ├── routes/
+│   │   │   ├── __init__.py
+│   │   │   ├── admin_routes.py
+│   │   │   ├── auth_routes.py
+│   │   │   ├── doctor_routes.py
+│   │   │   ├── public_routes.py
+│   │   │   ├── review_routes.py
+│   │   │   ├── user_routes.py
+│   │   │   └── websockets.py
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── auth.py
+│   │   ├── cloudinary_utils.py
+│   │   ├── config.py
+│   │   └── db.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── clinic_models.py
+│   │   └── user_models.py
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   ├── admin_schemas.py
+│   │   ├── clinic_schemas.py
+│   │   └── user_schemas.py
+│   ├── scripts/
+│   │   ├── create_admin.py
+│   │   └── reset_admin_password.py
+│   └── tests/
+│       ├── sample_degree.pdf
+│       ├── sample_photo.png
+│       └── test_auth_user_endpoints.py
+├── clinic-frontend/
+│   ├── .gitignore
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── README.md
+│   ├── tailwind.config.js
+│   ├── tailwind.config.cjs
+│   ├── tsconfig.app.json
+│   ├── tsconfig.json
+│   ├── tsconfig.node.json
+│   ├── vite.config.ts
+│   ├── public/
+│   │   └── vite.svg
+│   └── src/
+│       ├── App.tsx
+│       ├── index.css
+│       ├── main.tsx
+│       ├── vite-env.d.ts
+│       ├── api/
+│       │   └── axiosInstance.ts
+│       ├── assets/
+│       ├── components/
+│       │   ├── AccountDropdown.tsx
+│       │   ├── AuthFormContainer.tsx
+│       │   ├── DoctorCard.tsx
+│       │   ├── Footer.tsx
+│       │   ├── Navbar.tsx
+│       │   ├── PageWrapper.tsx
+│       │   └── StarRating.tsx
+│       ├── pages/
+│       │   ├── AboutUsPage.tsx
+│       │   ├── AdminDashboardPage.tsx
+│       │   ├── AppointmentBookingPage.tsx
+│       │   ├── BlogPage.tsx
+│       │   ├── ContactUsPage.tsx
+│       │   ├── DoctorDashboardPage.tsx
+│       │   ├── DoctorProfilePage.tsx
+│       │   ├── DoctorsPage.tsx
+│       │   ├── EmergencyPage.tsx
+│       │   ├── FAQPage.tsx
+│       │   ├── LandingPage.tsx
+│       │   ├── LoginPage.tsx
+│       │   ├── MyProfilePage.tsx
+│       │   ├── PatientDashboardPage.tsx
+│       │   ├── PrivacyPolicyPage.tsx
+│       │   ├── RegisterPage.tsx
+│       │   ├── ServicesPage.tsx
+│       │   ├── SettingsPage.tsx
+│       │   ├── UnauthorizedPage.tsx
+│       │   └── VideoCallPage.tsx
+│       ├── stores/
+│       │   └── authStore.ts
