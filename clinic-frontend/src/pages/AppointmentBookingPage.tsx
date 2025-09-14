@@ -22,6 +22,10 @@ type AppointmentBookingPageProps = {
 const AppointmentBookingPage = ({ doctorId, doctorName, onNavigate }: AppointmentBookingPageProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [patientName, setPatientName] = useState<string>("");
+  const [patientAddress, setPatientAddress] = useState<string>("");
+  const [patientEmail, setPatientEmail] = useState<string>("");
+  const [patientPhone, setPatientPhone] = useState<string>("");
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(new Date(e.target.value));
@@ -32,13 +36,21 @@ const AppointmentBookingPage = ({ doctorId, doctorName, onNavigate }: Appointmen
       alert("Please select a date and time.");
       return;
     }
+    if (!patientName || !patientEmail || !patientPhone || !patientAddress) {
+      alert("Please fill in all contact details.");
+      return;
+    }
     try {
       const response = await axiosInstance.post('/users/me/appointments', {
         doctor_id: doctorId,
         appointment_date: selectedDate.toISOString(),
         appointment_time: selectedTime,
         reason: "General Consultation", // Could be extended to a form input
-        notes: ""
+        notes: "",
+        patient_name: patientName,
+        patient_email: patientEmail,
+        patient_phone: patientPhone,
+        patient_address: patientAddress
       });
       alert(`Booking confirmed for Dr. ${doctorName} on ${selectedDate.toDateString()} at ${selectedTime}.`);
     } catch (error) {
@@ -93,6 +105,57 @@ const AppointmentBookingPage = ({ doctorId, doctorName, onNavigate }: Appointmen
                   {time}
                 </button>
               ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Contact Details Section */}
+        <div className="mt-12 bg-dark-card p-8 rounded-2xl shadow-xl border border-slate-700">
+          <h2 className="text-2xl font-bold text-dark-text mb-6">3. Contact Details</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-dark-text mb-2">Full Name</label>
+              <input
+                type="text"
+                value={patientName}
+                onChange={(e) => setPatientName(e.target.value)}
+                className="w-full p-3 bg-slate-700/50 border border-slate-600 rounded-lg text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-dark-text mb-2">Email</label>
+              <input
+                type="email"
+                value={patientEmail}
+                onChange={(e) => setPatientEmail(e.target.value)}
+                className="w-full p-3 bg-slate-700/50 border border-slate-600 rounded-lg text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-dark-text mb-2">Phone Number</label>
+              <input
+                type="tel"
+                value={patientPhone}
+                onChange={(e) => setPatientPhone(e.target.value)}
+                className="w-full p-3 bg-slate-700/50 border border-slate-600 rounded-lg text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                placeholder="Enter your phone number"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-dark-text mb-2">Address</label>
+              <input
+                type="text"
+                value={patientAddress}
+                onChange={(e) => setPatientAddress(e.target.value)}
+                className="w-full p-3 bg-slate-700/50 border border-slate-600 rounded-lg text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                placeholder="Enter your address"
+                required
+              />
             </div>
           </div>
         </div>

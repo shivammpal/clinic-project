@@ -8,9 +8,10 @@ import type { NavigateFunction, Page } from '../App';
 
 type NavbarProps = {
   onNavigate: NavigateFunction;
+  currentPage: Page;
 };
 
-const Navbar = ({ onNavigate }: NavbarProps) => {
+const Navbar = ({ onNavigate, currentPage }: NavbarProps) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
 
@@ -37,7 +38,7 @@ const Navbar = ({ onNavigate }: NavbarProps) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo on the left */}
+          {/* Logo on the left */} 
           <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => onNavigate('home')}>
             <Logo />
             <span className="text-2xl font-bold text-brand-blue">MediConnect</span>
@@ -48,13 +49,28 @@ const Navbar = ({ onNavigate }: NavbarProps) => {
             {/* Navigation Links */}
             <div className="flex items-center space-x-8">
               {primaryLinks.map((link) => (
-                <button key={link.label} onClick={() => onNavigate(link.page)} className="text-dark-subtle hover:text-brand-blue font-medium transition-colors duration-300">
+                <button
+                  key={link.label}
+                  onClick={() => onNavigate(link.page)}
+                  className={`font-medium transition-colors duration-300 ${
+                    currentPage === link.page
+                      ? "bg-brand-blue text-white rounded-md px-2 py-1"
+                      : "text-dark-subtle hover:text-brand-blue"
+                  }`}
+                >
                   {link.label}
                 </button>
               ))}
 
               <div className="relative">
-                <button onClick={() => setIsMoreOpen(!isMoreOpen)} className="flex items-center gap-1 text-dark-subtle hover:text-brand-blue font-medium transition-colors duration-300">
+                <button
+                  onClick={() => setIsMoreOpen(!isMoreOpen)}
+                  className={`flex items-center gap-1 font-medium transition-colors duration-300 ${
+                    currentPage === "contact" || currentPage === "faq" || currentPage === "privacy"
+                      ? "bg-brand-blue text-white rounded-md px-2 py-1"
+                      : "text-dark-subtle hover:text-brand-blue"
+                  }`}
+                >
                   More
                   <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 transition-transform ${isMoreOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -70,7 +86,9 @@ const Navbar = ({ onNavigate }: NavbarProps) => {
                          <button
                             key={link.label}
                             onClick={() => { onNavigate(link.page); setIsMoreOpen(false); }}
-                            className="w-full text-left block px-4 py-2 text-sm text-dark-text hover:bg-slate-700/50"
+                            className={`w-full text-left block px-4 py-2 text-sm hover:bg-slate-700/50 ${
+                              currentPage === link.page ? "bg-brand-blue text-white rounded-md" : "text-dark-text"
+                            }`}
                           >
                             {link.label}
                           </button>

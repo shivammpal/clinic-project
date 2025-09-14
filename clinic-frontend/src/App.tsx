@@ -91,7 +91,7 @@ function App() {
 
   return (
     <div className="bg-dark-bg min-h-screen text-dark-text font-sans">
-      <Navbar onNavigate={handleNavigate} />
+      <Navbar onNavigate={handleNavigate} currentPage={currentPage.name} />
       <main>{renderPage()}</main>
       <Footer onNavigate={handleNavigate} />
     </div>

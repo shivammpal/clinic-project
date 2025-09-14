@@ -67,8 +67,11 @@ class AppointmentWithDoctorInfo(AppointmentOut):
         from_attributes = True
 # Add this new class at the end of the file
 class AppointmentWithPatientInfo(AppointmentOut):
-    """Extends AppointmentOut to include the patient's full name."""
+    """Extends AppointmentOut to include the patient's full name and contact details."""
     patient_name: Optional[str] = None
+    patient_email: Optional[str] = None
+    patient_phone: Optional[str] = None
+    patient_address: Optional[str] = None
 
     class Config:
         from_attributes = True
