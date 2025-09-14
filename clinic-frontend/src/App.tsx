@@ -71,7 +71,7 @@ function App() {
       case "login": return <LoginPage onNavigate={handleNavigate} />;
       case "register": return <RegisterPage onNavigate={handleNavigate} />;
       case "doctors": return <DoctorsPage onNavigate={handleNavigate} />;
-      case "doctorProfile": return <DoctorProfilePage doctorId={currentPage.id} />;
+      case "doctorProfile": return <DoctorProfilePage doctorId={currentPage.id} onNavigate={handleNavigate} />;
       case "videoCall": return <VideoCallPage onNavigate={handleNavigate} />;
       case "home": return <LandingPage onNavigate={handleNavigate} />;
       

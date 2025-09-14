@@ -25,8 +25,8 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       login: (token) => {
         try {
-          const decodedToken: { sub: string, role: User['role'] } = jwtDecode(token);
-          const user: User = { id: decodedToken.sub, role: decodedToken.role };
+          const decodedToken: { user_id: string, role: User['role'] } = jwtDecode(token);
+          const user: User = { id: decodedToken.user_id, role: decodedToken.role };
           set({ token, user, isAuthenticated: true });
         } catch (error) {
           console.error("Failed to decode token:", error);

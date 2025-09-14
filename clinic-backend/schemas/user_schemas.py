@@ -23,6 +23,7 @@ class UserOut(BaseModel):
     """
     user_id: UUID
     email: EmailStr
+    full_name: Optional[str] = None
     role: Role
     is_active: bool
 

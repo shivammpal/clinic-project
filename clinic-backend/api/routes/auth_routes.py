@@ -106,8 +106,11 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
+    # Fix: convert user document to dict and exclude missing fields for Pydantic validation
+    user_dict = user.dict(exclude_unset=True)
+
     # Verify the password
-    if not verify_password(form_data.password, user.hashed_password):
+    if not verify_password(form_data.password, user_dict['hashed_password']):
         raise HTTPException(status_code=401, detail="Incorrect password")
 
     # Check if the user is a doctor and if they are verified
@@ -121,6 +124,6 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
     # Create access token
     access_token = create_access_token(
-        data={"sub": str(user.user_id), "role": user.role.value}
+        data={"user_id": str(user.user_id), "role": user.role.value}
     )
     return {"access_token": access_token, "token_type": "bearer"}

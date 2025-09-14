@@ -22,13 +22,20 @@ type Review = {
   created_at: string; 
 };
 
+import type { NavigateFunction } from '../App';
+
 type DoctorProfilePageProps = {
   doctorId: string;
+  onNavigate: NavigateFunction;
 };
 
-const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
+const DoctorProfilePage = ({ doctorId, onNavigate }: DoctorProfilePageProps) => {
   const [doctor, setDoctor] = useState<DoctorProfile | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
+
+  const handleBookAppointment = () => {
+    onNavigate('bookAppointment', { doctorId, doctorName: doctor?.full_name || '' });
+  };
 
   // ✅ Safe store usage (no infinite loop)
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -103,6 +110,14 @@ const DoctorProfilePage = ({ doctorId }: DoctorProfilePageProps) => {
           <h1 className="text-3xl font-bold">{doctor.full_name}</h1>
           <p className="text-lg text-dark-subtle">{doctor.specialty}</p>
           {doctor.bio && <p className="mt-4 text-dark-text">{doctor.bio}</p>}
+          {isAuthenticated && user?.role === 'patient' && (
+            <button
+              onClick={handleBookAppointment}
+              className="mt-4 bg-brand-blue text-white py-2 px-4 rounded-lg font-semibold hover:bg-sky-600 transition-colors"
+            >
+              Book Appointment
+            </button>
+          )}
         </div>
       </div>
 

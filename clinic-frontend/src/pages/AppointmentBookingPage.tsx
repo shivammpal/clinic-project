@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import axiosInstance from '../api/axiosInstance';
+import type { NavigateFunction } from '../App';
 // Mock data for available time slots. In the future, this will come from the backend.
 const timeSlots = [
   "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM",
@@ -14,9 +16,10 @@ const timeSlots = [
 type AppointmentBookingPageProps = {
   doctorId: string;
   doctorName: string; // We'll pass the doctor's name for a better UX
+  onNavigate: NavigateFunction;
 };
 
-const AppointmentBookingPage = ({ doctorId, doctorName }: AppointmentBookingPageProps) => {
+const AppointmentBookingPage = ({ doctorId, doctorName, onNavigate }: AppointmentBookingPageProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
@@ -24,13 +27,24 @@ const AppointmentBookingPage = ({ doctorId, doctorName }: AppointmentBookingPage
     setSelectedDate(new Date(e.target.value));
   };
   
-  const handleBooking = () => {
+  const handleBooking = async () => {
     if (!selectedDate || !selectedTime) {
       alert("Please select a date and time.");
       return;
     }
-    // API call to book the appointment will be added here in a future task
-    alert(`Booking confirmed for Dr. ${doctorName} on ${selectedDate.toDateString()} at ${selectedTime}. (Doctor ID: ${doctorId})`);
+    try {
+      const response = await axiosInstance.post('/users/me/appointments', {
+        doctor_id: doctorId,
+        appointment_date: selectedDate.toISOString(),
+        appointment_time: selectedTime,
+        reason: "General Consultation", // Could be extended to a form input
+        notes: ""
+      });
+      alert(`Booking confirmed for Dr. ${doctorName} on ${selectedDate.toDateString()} at ${selectedTime}.`);
+    } catch (error) {
+      console.error("Failed to book appointment", error);
+      alert("Failed to book appointment. Please try again later.");
+    }
   };
 
   return (

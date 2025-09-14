@@ -60,9 +60,14 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.5, type: 'spring', stiffness: 100 }}
             className="hidden md:block w-full h-96 bg-gradient-to-br from-sky-900 via-slate-800 to-emerald-900 rounded-3xl shadow-2xl flex items-center justify-center border border-slate-700"
           >
-            <span className="text-dark-subtle font-bold text-2xl">
-              [ 3D Interactive Model Placeholder ]
-            </span>
+            <iframe
+              className="w-full h-full rounded-3xl"
+              src="https://www.youtube.com/embed/6S_z6NEQ4y8?si=O94Z3QTX9iE0jviO"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </motion.div>
         </div>
       </div>

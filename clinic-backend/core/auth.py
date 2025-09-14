@@ -32,25 +32,19 @@ def create_access_token(data: dict):
 # --- UPDATED FUNCTION ---
 def decode_access_token(token: str) -> dict:
     """
-    Decodes the access token and extracts user_id and role.
-
-    Returns:
-        dict: The payload containing user_id and role.
+    Decodes the access token.
+    Raises an exception if the token is invalid, expired, or malformed.
     """
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        user_id: str = payload.get("sub")
-        role: str = payload.get("role") # <-- NEW: Extract the role
-
-        # Check if both user_id and role are in the token
-        if user_id is None or role is None:
-            raise HTTPException(status_code=401, detail="Invalid token payload")
-            
-        return {"user_id": user_id, "role": role} # <-- NEW: Return both values
-
+        # Decode the token and return the entire original payload
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
+        return payload
     except JWTError:
+        # This will catch any error during decoding (e.g., expired, invalid signature)
         raise HTTPException(
-            status_code=401, 
-            detail="Could not validate credentials", 
-            headers={"WWW-Authenticate": "Bearer"}
+            status_code=401,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
         )

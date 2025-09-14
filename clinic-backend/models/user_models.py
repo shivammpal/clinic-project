@@ -22,6 +22,7 @@ class User(Document):
     # We use Field to explicitly define properties
     user_id: UUID = Field(default_factory=uuid4, unique=True)
     email: EmailStr = Field(..., indexed=True, unique=True)
+    full_name: Optional[str] = None
     hashed_password: str
     role: Role = Field(default=Role.PATIENT)
     is_active: bool = Field(default=True)

@@ -12,6 +12,7 @@ interface Appointment {
   appointment_time: string;
   status: string;
   doctor_id: string; 
+  doctor_name: string;
 }
 
 interface Prescription {
@@ -79,9 +80,7 @@ const AppointmentsList = ({ token }: { token: string | null }) => {
     const fetchAppointments = async () => {
       if (!token) { setIsLoading(false); return; }
       try {
-        const response = await axiosInstance.get('/users/me/appointments', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await axiosInstance.get('/users/me/appointments');
         setAppointments(response.data);
       } catch (error) { console.error("Failed to fetch appointments", error); }
       finally { setIsLoading(false); }
@@ -97,7 +96,7 @@ const AppointmentsList = ({ token }: { token: string | null }) => {
       {appointments.map(app => (
         <div key={app.appointment_id} className="bg-dark-card p-4 rounded-lg flex justify-between items-center">
           <div>
-            <p className="font-bold text-dark-text">Appointment with Dr. [Name]</p>
+            <p className="font-bold text-dark-text">Appointment with Dr.{app.doctor_name}</p>
             <p className="text-sm text-dark-subtle">{new Date(app.appointment_date).toDateString()} at {app.appointment_time}</p>
           </div>
           <span className="capitalize text-sm font-semibold px-3 py-1 bg-sky-800/50 text-sky-300 rounded-full">{app.status}</span>
@@ -113,9 +112,7 @@ const PrescriptionsList = ({ token }: { token: string | null }) => {
     const fetchPrescriptions = async () => {
        if (!token) return;
         try {
-            const response = await axiosInstance.get('/users/me/prescriptions', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const response = await axiosInstance.get('/users/me/prescriptions');
             setPrescriptions(response.data);
         } catch (error) { console.error("Failed to fetch prescriptions", error); }
     };

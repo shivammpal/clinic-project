@@ -1,15 +1,17 @@
-# Doctor Registration API Integration
+# Fix Token Comparison and Authentication Issues
 
-## Tasks
-- [x] Update DoctorForm in RegisterPage.tsx to connect to /auth/register/doctor endpoint
-- [x] Implement FormData for multipart/form-data submission with file uploads
-- [x] Add proper error handling and user feedback
-- [x] Navigate to login page on successful registration
-- [ ] Test the complete registration flow
+## Backend Fixes
+- [x] Update `clinic-backend/api/routes/auth_routes.py`: Change token creation to use "user_id" claim instead of "sub"
+- [x] Update `clinic-backend/core/auth.py`: Ensure token creation supports "user_id" claim (already flexible)
+- [x] Update `clinic-backend/api/dependencies.py`: Ensure get_current_user uses "user_id" from payload (already does, but confirm)
+- [x] Fix User model validation: Make full_name optional in User model and UserOut schema
+- [x] Fix AppointmentWithPatientInfo schema: Make patient_name optional to handle missing full_name
+- [x] Update `clinic-backend/api/routes/doctor_routes.py`: Handle None full_name for patients in appointments
 
-## Files to Edit
-- [x] clinic-frontend/src/pages/RegisterPage.tsx
+## Frontend Fixes
+- [x] Update `clinic-frontend/src/stores/authStore.ts`: Change token decoding to expect "user_id" instead of "sub"
 
-## Dependencies
-- [x] Backend endpoints already implemented
-- [x] Axios instance configured for API calls
+## Testing
+- [ ] Test login functionality (fixed model validation error)
+- [ ] Test access to protected routes (e.g., user dashboard, admin dashboard, doctor dashboard)
+- [ ] Verify token persistence and logout

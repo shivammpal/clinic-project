@@ -29,7 +29,7 @@ const LoginPage = ({ onNavigate }: LoginPageProps) => {
 
     try {
       const response = await axios.post(
-        'https://clinic-project-53n7.onrender.com/auth/login', // fixed backend login endpoint
+        `${import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'}/auth/login`,
         formData,
         {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

@@ -19,7 +19,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
         headers={"WWW-Authenticate": "Bearer"},
     )
     payload = decode_access_token(token)
-    
+
     # --- THIS IS THE CORRECTED LINE ---
     user_id = payload.get("user_id") # Use "user_id" instead of "sub"
     # --- END OF CORRECTION ---

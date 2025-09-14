@@ -1,12 +1,11 @@
 # File: clinic-backend/models/clinic_models.py
 
 from beanie import Document
-from pydantic import Field
+from pydantic import Field, BaseModel, conint
 from uuid import UUID, uuid4
 from datetime import datetime, date
 from typing import Optional
 from enum import Enum
-from pydantic import BaseModel, conint
 
 class AppointmentStatus(str, Enum):
     PENDING = "pending"
@@ -20,8 +19,21 @@ class Appointment(Document):
     doctor_id: UUID = Field(..., index=True)
     appointment_date: date
     appointment_time: str
-    status: AppointmentStatus = AppointmentStatus.PENDING
+
+    # --- ADDED THESE FIELDS ---
+    reason: Optional[str] = None
+    notes: Optional[str] = None
+    status: AppointmentStatus = Field(default=AppointmentStatus.PENDING)
+
+    # --- CONTACT DETAILS ---
+    patient_name: Optional[str] = None
+    patient_email: Optional[str] = None
+    patient_phone: Optional[str] = None
+    patient_address: Optional[str] = None
+
+    # --- CORRECTED STATUS PLACEMENT AND ADDED TIMESTAMPS ---
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Settings:
         name = "appointments"
@@ -37,26 +49,27 @@ class Prescription(Document):
 
     class Settings:
         name = "prescriptions"
+
 class Review(Document):
     review_id: UUID = Field(default_factory=uuid4, unique=True)
     doctor_id: UUID = Field(..., index=True)
     patient_id: UUID = Field(..., index=True)
-    # conint(ge=1, le=5) ensures the rating is an integer between 1 and 5
     rating: conint(ge=1, le=5) 
     comment: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Settings:
         name = "reviews"
+
+# Note: The two schemas below are duplicates of what's in clinic_schemas.py.
+# It's best practice to remove them from this model file to avoid confusion.
 class ReviewCreate(BaseModel):
-    """Schema for a patient creating a new review."""
     rating: conint(ge=1, le=5)
     comment: Optional[str] = None
 
 class ReviewOut(BaseModel):
-    """Schema for displaying a review publicly."""
     review_id: UUID
-    patient_id: UUID # For now, we only expose the ID for keying on the frontend
+    patient_id: UUID
     rating: int
     comment: Optional[str] = None
     created_at: datetime
