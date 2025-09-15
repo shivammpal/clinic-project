@@ -17,7 +17,7 @@ type AdminDashboardPageProps = {
   onNavigate: NavigateFunction;
 };
 
-const AdminDashboardPage = ({ onNavigate }: AdminDashboardPageProps) => {
+const AdminDashboardPage = () => {
   const [pendingDoctors, setPendingDoctors] = useState<PendingDoctor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState<string>('');

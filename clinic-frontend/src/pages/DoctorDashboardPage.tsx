@@ -14,11 +14,7 @@ interface Appointment {
   patient_address?: string;
 }
 
-type DoctorDashboardPageProps = {
-  onNavigate: NavigateFunction;
-};
-
-const DoctorDashboardPage = ({ onNavigate }: DoctorDashboardPageProps) => {
+const DoctorDashboardPage = () => {
   const [activeTab, setActiveTab] = useState('appointments');
 
   return (
