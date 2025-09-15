@@ -16,6 +16,7 @@ const timeSlots = [
 type AppointmentBookingPageProps = {
   doctorId: string;
   doctorName: string; // We'll pass the doctor's name for a better UX
+  onNavigate: NavigateFunction;
 };
 
 const AppointmentBookingPage = ({ doctorId, doctorName }: AppointmentBookingPageProps) => {

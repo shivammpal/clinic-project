@@ -34,7 +34,9 @@ const DoctorProfilePage = ({ doctorId, onNavigate }: DoctorProfilePageProps) => 
   const [reviews, setReviews] = useState<Review[]>([]);
 
   const handleBookAppointment = () => {
-    onNavigate('bookAppointment', { doctorId, doctorName: doctor?.full_name || '' });
+    if (doctor) {
+      onNavigate('bookAppointment', { doctorId, doctorName: doctor.full_name });
+    }
   };
 
   // ✅ Safe store usage (no infinite loop)
