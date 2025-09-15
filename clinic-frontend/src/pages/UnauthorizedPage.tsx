@@ -1,9 +1,11 @@
 // File: clinic-frontend/src/pages/UnauthorizedPage.tsx
+import type { NavigateFunction } from '../App';
+
 type UnauthorizedPageProps = {
-  onNavigate: any;
+  onNavigate: NavigateFunction;
 };
 
-function UnauthorizedPage({ onNavigate }: UnauthorizedPageProps) {
+const UnauthorizedPage = ({ onNavigate }: UnauthorizedPageProps) => {
   return (
     <div className="max-w-4xl mx-auto text-center py-20 px-4">
       <h1 className="text-5xl font-extrabold text-red-500">Access Denied</h1>
@@ -16,5 +18,5 @@ function UnauthorizedPage({ onNavigate }: UnauthorizedPageProps) {
       </button>
     </div>
   );
-}
+};
 export default UnauthorizedPage;
