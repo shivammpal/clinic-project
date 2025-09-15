@@ -42,7 +42,7 @@ const AppointmentBookingPage = ({ doctorId, doctorName, onNavigate }: Appointmen
     try {
       await axiosInstance.post('/users/me/appointments', {
         doctor_id: doctorId,
-        appointment_date: selectedDate.toISOString(),
+        appointment_date: selectedDate.toISOString().split('T')[0],
         appointment_time: selectedTime,
         reason: "General Consultation",
         notes: "",
