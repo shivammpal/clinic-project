@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
+import type { NavigateFunction } from '../App';
 
 // The interface now correctly anticipates the patient's name
 interface Appointment {
@@ -13,7 +14,11 @@ interface Appointment {
   patient_address?: string;
 }
 
-const DoctorDashboardPage = () => {
+type DoctorDashboardPageProps = {
+  onNavigate: NavigateFunction;
+};
+
+const DoctorDashboardPage = ({ onNavigate }: DoctorDashboardPageProps) => {
   const [activeTab, setActiveTab] = useState('appointments');
 
   return (
