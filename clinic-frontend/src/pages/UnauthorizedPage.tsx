@@ -1,9 +1,6 @@
 // File: clinic-frontend/src/pages/UnauthorizedPage.tsx
-import React from 'react';
-import type { NavigateFunction } from '../App';
-
 type UnauthorizedPageProps = {
-  onNavigate: NavigateFunction;
+  onNavigate: any;
 };
 
 function UnauthorizedPage({ onNavigate }: UnauthorizedPageProps) {
