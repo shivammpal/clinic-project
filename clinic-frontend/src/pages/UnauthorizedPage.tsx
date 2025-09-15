@@ -1,11 +1,12 @@
 // File: clinic-frontend/src/pages/UnauthorizedPage.tsx
+import React from 'react';
 import type { NavigateFunction } from '../App';
 
 type UnauthorizedPageProps = {
   onNavigate: NavigateFunction;
 };
 
-const UnauthorizedPage = ({ onNavigate }: UnauthorizedPageProps) => {
+const UnauthorizedPage: React.FC<UnauthorizedPageProps> = ({ onNavigate }) => {
   return (
     <div className="max-w-4xl mx-auto text-center py-20 px-4">
       <h1 className="text-5xl font-extrabold text-red-500">Access Denied</h1>

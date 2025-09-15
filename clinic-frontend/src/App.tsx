@@ -62,9 +62,9 @@ function App() {
     // This switch statement remains the same
     switch (currentPage.name) {
       case "adminDashboard":
-        return user?.role === 'admin' ? <AdminDashboardPage onNavigate={handleNavigate} /> : <UnauthorizedPage onNavigate={handleNavigate} />;
+        return user?.role === 'admin' ? <AdminDashboardPage /> : <UnauthorizedPage onNavigate={handleNavigate} />;
       case "doctorDashboard":
-        return user?.role === 'doctor' ? <DoctorDashboardPage onNavigate={handleNavigate} /> : <UnauthorizedPage onNavigate={handleNavigate} />;
+        return user?.role === 'doctor' ? <DoctorDashboardPage /> : <UnauthorizedPage onNavigate={handleNavigate} />;
       case "patientDashboard":
         return user?.role === 'patient' ? <PatientDashboardPage onNavigate={handleNavigate} /> : <UnauthorizedPage onNavigate={handleNavigate} />;
       
