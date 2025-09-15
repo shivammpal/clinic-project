@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react"; // <-- IMPORT useCallback
+import React, { useState, useCallback } from 'react'; // Combined import for React and hooks
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { useAuthStore } from "./stores/authStore";
@@ -58,7 +58,7 @@ function App() {
   }, []); // <-- Empty dependency array means the function is created only once
   // --- END OF CORRECTION ---
 
-  const renderPage = () => {
+  const renderPage = (): JSX.Element => {
     // This switch statement remains the same
     switch (currentPage.name) {
       case "adminDashboard":
