@@ -1,4 +1,6 @@
-import React, { useState, useCallback } from 'react'; // Combined import for React and hooks
+// clinic-frontend/src/App.tsx
+
+import { useState, useCallback } from 'react'; // FIXED: Removed 'React' from import
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { useAuthStore } from "./stores/authStore";
@@ -45,7 +47,6 @@ function App() {
   const [currentPage, setCurrentPage] = useState<PageState>({ name: "home" });
   const user = useAuthStore((state) => state.user);
 
-  // --- THIS IS THE CORRECTED FUNCTION ---
   const handleNavigate: NavigateFunction = useCallback((page, data) => {
     if (page === "doctorProfile" && data?.id) {
       setCurrentPage({ name: page, id: data.id });
@@ -55,11 +56,9 @@ function App() {
       // @ts-ignore
       setCurrentPage({ name: page });
     }
-  }, []); // <-- Empty dependency array means the function is created only once
-  // --- END OF CORRECTION ---
+  }, []);
 
   const renderPage = (): JSX.Element => {
-    // This switch statement remains the same
     switch (currentPage.name) {
       case "adminDashboard":
         if (user?.role === 'admin') {

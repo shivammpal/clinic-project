@@ -4,22 +4,21 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import axiosInstance from '../api/axiosInstance';
 import type { NavigateFunction } from '../App';
+
 // Mock data for available time slots. In the future, this will come from the backend.
 const timeSlots = [
   "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM",
   "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM",
 ];
 
-
-
-// Define props to receive doctor info
+// --- FIX: Updated props to include onNavigate ---
 type AppointmentBookingPageProps = {
   doctorId: string;
-  doctorName: string; // We'll pass the doctor's name for a better UX
+  doctorName: string;
   onNavigate: NavigateFunction;
 };
 
-const AppointmentBookingPage = ({ doctorId, doctorName }: AppointmentBookingPageProps) => {
+const AppointmentBookingPage = ({ doctorId, doctorName, onNavigate }: AppointmentBookingPageProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [patientName, setPatientName] = useState<string>("");
@@ -45,7 +44,7 @@ const AppointmentBookingPage = ({ doctorId, doctorName }: AppointmentBookingPage
         doctor_id: doctorId,
         appointment_date: selectedDate.toISOString(),
         appointment_time: selectedTime,
-        reason: "General Consultation", // Could be extended to a form input
+        reason: "General Consultation",
         notes: "",
         patient_name: patientName,
         patient_email: patientEmail,
@@ -53,6 +52,8 @@ const AppointmentBookingPage = ({ doctorId, doctorName }: AppointmentBookingPage
         patient_address: patientAddress
       });
       alert(`Booking confirmed for Dr. ${doctorName} on ${selectedDate.toDateString()} at ${selectedTime}.`);
+      // Use onNavigate to go to the patient dashboard after booking
+      onNavigate('patientDashboard');
     } catch (error) {
       console.error("Failed to book appointment", error);
       alert("Failed to book appointment. Please try again later.");
@@ -81,7 +82,6 @@ const AppointmentBookingPage = ({ doctorId, doctorName }: AppointmentBookingPage
               <input
                 type="date"
                 onChange={handleDateChange}
-                // Sets the minimum date to today
                 min={new Date().toISOString().split("T")[0]}
                 className="w-full p-3 bg-slate-700/50 border border-slate-600 rounded-lg text-dark-text focus:outline-none focus:ring-2 focus:ring-brand-blue"
               />
@@ -164,7 +164,7 @@ const AppointmentBookingPage = ({ doctorId, doctorName }: AppointmentBookingPage
         <div className="mt-8 text-center">
           <button
             onClick={handleBooking}
-            disabled={!selectedDate || !selectedTime}
+            disabled={!selectedTime || !patientName || !patientEmail || !patientPhone || !patientAddress}
             className="bg-brand-blue text-white font-bold py-4 px-12 text-lg rounded-lg shadow-lg hover:bg-sky-600 transition-colors disabled:bg-slate-600 disabled:cursor-not-allowed"
           >
             Confirm Booking

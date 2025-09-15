@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+import type { NavigateFunction } from '../App'; // --- FIX: Import NavigateFunction type ---
 
-const VideoCallPage = () => {
+// --- FIX: Define props to accept onNavigate ---
+type VideoCallPageProps = {
+  onNavigate: NavigateFunction;
+};
+
+const VideoCallPage = ({ onNavigate }: VideoCallPageProps) => {
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
 
@@ -10,9 +16,11 @@ const VideoCallPage = () => {
 
   useEffect(() => {
     const getWebSocketURL = () => {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-      const wsProtocol = apiBaseUrl.startsWith('https') ? 'wss' : 'ws';
-      return `${wsProtocol}://${apiBaseUrl.split('//')[1]}/ws/video-call/test-room`;
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
+      // Ensure the base URL does not have a trailing slash for proper ws URL construction
+      const cleanApiBaseUrl = apiBaseUrl.endsWith('/') ? apiBaseUrl.slice(0, -1) : apiBaseUrl;
+      const wsProtocol = cleanApiBaseUrl.startsWith('https') ? 'wss' : 'ws';
+      return `${wsProtocol}://${cleanApiBaseUrl.split('//')[1]}/ws/video-call/test-room`;
     };
 
     const ws = new WebSocket(getWebSocketURL());
@@ -65,6 +73,8 @@ const VideoCallPage = () => {
       localVideoRef.current.srcObject = null;
     }
     alert("Call has been ended.");
+    // --- FIX: Navigate away after ending the call ---
+    onNavigate('patientDashboard');
   };
 
   return (

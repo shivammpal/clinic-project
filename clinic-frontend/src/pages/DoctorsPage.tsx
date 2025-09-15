@@ -11,6 +11,7 @@ type Doctor = {
   photo_url: string | null;
 };
 
+// --- FIX: Added props for onNavigate ---
 type DoctorsPageProps = {
     onNavigate: NavigateFunction;
 };
