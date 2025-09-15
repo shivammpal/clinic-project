@@ -14,6 +14,8 @@ export default {
         'dark-card': '#1e293b',
         'dark-text': '#e2e8f0',
         'dark-subtle': '#94a3b8',
+        'dark-grey': '#2d2d2d',
+        'light-black': '#121212',
       },
     },
   },

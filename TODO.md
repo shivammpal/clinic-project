@@ -1,7 +1,8 @@
-# TODO: Refactor navigation to React Router
+# Blog Page UI Improvement Tasks
 
-- [ ] Install react-router-dom dependency
-- [ ] Refactor src/App.tsx to use React Router routes
-- [ ] Refactor src/components/Navbar.tsx to use NavLink for navigation
-- [ ] Update other components using onNavigate to use React Router navigation
-- [ ] Test navigation and browser back button functionality
+- [x] Update main container to use dark background and text colors
+- [x] Update header section typography to match web app style
+- [x] Update blog cards with dark secondary background, shadows, and hover effects
+- [x] Add transitions and interactivity to blog cards
+- [x] Verify UI improvements match the web app style (adjusted to light black cards with white text)
+- [x] Add 3D effects to blog cards

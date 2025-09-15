@@ -8,7 +8,7 @@ type FooterProps = {
 
 const Footer = ({ onNavigate }: FooterProps) => {
   return (
-    <footer className="bg-dark-card text-dark-subtle pt-16 pb-8">
+    <footer className="bg-light-black text-dark-subtle pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <h3 className="text-xl font-bold text-dark-text mb-4">MediConnect</h3>

@@ -16,7 +16,7 @@ const Navbar = ({ onNavigate, currentPage }: NavbarProps) => {
   const [isMoreOpen, setIsMoreOpen] = useState(false);
 
   const Logo = () => ( <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="#0ea5e9" /> <path d="M12 12L22 7" stroke="white" strokeWidth="1.5" /> <path d="M12 12V22" stroke="white" strokeWidth="1.5" /> <path d="M12 12L2 7" stroke="white" strokeWidth="1.5" /> <path d="M17 4.5L7 9.5" stroke="white" strokeWidth="1.5" /> </svg> );
-  
+
   const primaryLinks: { label: string; page: Page }[] = [
     { label: "Home", page: "home" },
     { label: "Services", page: "services" },
@@ -38,7 +38,7 @@ const Navbar = ({ onNavigate, currentPage }: NavbarProps) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo on the left */} 
+          {/* Logo on the left */}
           <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => onNavigate('home')}>
             <Logo />
             <span className="text-2xl font-bold text-brand-blue">MediConnect</span>
@@ -98,7 +98,7 @@ const Navbar = ({ onNavigate, currentPage }: NavbarProps) => {
                 </AnimatePresence>
               </div>
             </div>
-            
+
             {/* Auth Buttons */}
             <div className="flex items-center space-x-4">
               {isAuthenticated ? (
@@ -115,7 +115,7 @@ const Navbar = ({ onNavigate, currentPage }: NavbarProps) => {
               )}
             </div>
           </div>
-          
+
           <div className="md:hidden flex items-center">{/* Mobile Menu Button Placeholder */}</div>
         </div>
       </div>
