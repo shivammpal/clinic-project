@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import { useAuthStore } from '../stores/authStore';
 import PageWrapper from '../components/PageWrapper';
-import type { NavigateFunction } from '../App';
 
 interface PendingDoctor {
   doctor_id: string;
@@ -12,10 +11,6 @@ interface PendingDoctor {
   photo_url?: string;
   degree_url?: string;
 }
-
-type AdminDashboardPageProps = {
-  onNavigate: NavigateFunction;
-};
 
 const AdminDashboardPage = () => {
   const [pendingDoctors, setPendingDoctors] = useState<PendingDoctor[]>([]);
